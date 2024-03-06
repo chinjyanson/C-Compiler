@@ -143,6 +143,7 @@ multiplicative_expression
 
 additive_expression
 	: multiplicative_expression
+	| additive_expression '+' multiplicative_expression { $$ = new Add($1, $3); }
 	;
 
 shift_expression
