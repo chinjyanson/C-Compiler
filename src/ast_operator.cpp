@@ -4,7 +4,9 @@ void Add::EmitRISC(std::ostream &stream, Context &context) const
 {
     stream << "add ";
     left_->EmitRISC(stream, context);
+    stream << ", ";
     left_->EmitRISC(stream, context);
+    stream << ", ";
     right_->EmitRISC(stream, context);
 
 }
