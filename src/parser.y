@@ -318,7 +318,9 @@ direct_declarator
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')'
+	| direct_declarator '(' parameter_list ')' {
+		$$ = new DirectDeclarator($1, $3);
+	}
 	| direct_declarator '(' identifier_list ')'
 	| direct_declarator '(' ')' {
 		$$ = new DirectDeclarator($1);
@@ -331,12 +333,12 @@ pointer
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration { $$ = new NodeList($1); }
+	| parameter_list ',' parameter_declaration { $1->PushBack($3); $$ = $1; }
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator
+	: declaration_specifiers declarator { $$ = new Parameter($1, $2); }
 	| declaration_specifiers abstract_declarator
 	| declaration_specifiers
 	;
