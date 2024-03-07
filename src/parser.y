@@ -213,7 +213,7 @@ constant_expression
 
 declaration
 	: declaration_specifiers ';'
-	| declaration_specifiers init_declarator_list ';'
+	| declaration_specifiers init_declarator_list ';' // handle variables here
 	;
 
 declaration_specifiers
