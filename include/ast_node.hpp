@@ -35,6 +35,7 @@ public:
         }
     }
 
+    std::vector<Node *> GetNodes() {return nodes_;}
     void PushBack(Node *item);
     virtual void EmitRISC(std::ostream &stream, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;

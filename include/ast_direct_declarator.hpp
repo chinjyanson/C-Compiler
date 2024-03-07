@@ -17,6 +17,7 @@ public:
         delete identifier_;
         delete parameter_list;
     };
+    Node *GetVar(){return identifier_;}
     void EmitRISC(std::ostream &stream, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };

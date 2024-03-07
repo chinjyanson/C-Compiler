@@ -213,7 +213,13 @@ constant_expression
 
 declaration
 	: declaration_specifiers ';'
-	| declaration_specifiers init_declarator_list ';'
+	| declaration_specifiers init_declarator_list ';' {
+        std::string type = $1->GetType();
+        for(auto& declarator : $2->GetNodes()){
+            std::string var_name = declarator->GetVar()->GetIdentifier();
+            context.AddVariable(var_name, type);
+        }
+     }
 	;
 
 declaration_specifiers
@@ -224,12 +230,12 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator
-	| init_declarator_list ',' init_declarator
+	: init_declarator {$$ = new NodeList($1); }
+	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$ = $1; }
 	;
 
 init_declarator
-	: declarator
+	: declarator { $$ = $1; }
 	| declarator '=' initializer
 	;
 
