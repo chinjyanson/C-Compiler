@@ -23,21 +23,4 @@ public:
     void Print(std::ostream& stream) const override;
 };
 
-/* class ParameterList : public Node {
-private:
-    std::vector<Parameter*> parameters_;
-
-public:
-    ParameterList(Parameter* parameter_) : parameters_({parameter_}) {}
-    ~ParameterList() {
-        for (auto parameter : parameters_) {
-            delete parameter;
-        }
-    }
-
-    void PushBack(Node *parameter_);
-    void EmitRISC(std::ostream& stream, Context& context) const override;
-    void Print(std::ostream& stream) const override;
-}; */
-
 #endif
