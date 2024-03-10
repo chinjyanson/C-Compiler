@@ -13,7 +13,7 @@ void NodeList::PushBack(Node *item)
     nodes_.push_back(item);
 }
 
-void NodeList::EmitRISC(std::ostream &stream, Context &context) const
+void NodeList::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
     for (auto node : nodes_)
     {
@@ -21,7 +21,7 @@ void NodeList::EmitRISC(std::ostream &stream, Context &context) const
         {
             continue;
         }
-        node->EmitRISC(stream, context);
+        node->EmitRISC(stream, context, destReg);
     }
 }
 
