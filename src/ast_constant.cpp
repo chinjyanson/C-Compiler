@@ -1,8 +1,8 @@
 #include "ast_constant.hpp"
 
-void IntConstant::EmitRISC(std::ostream &stream, Context &context, int destReg) const
+void IntConstant::EmitRISC(std::ostream &stream, Context &context) const
 {
-    stream << "li "<< destReg << "," << value_ << std::endl;
+    stream << "li a0, " << value_ << std::endl;
 }
 
 void IntConstant::Print(std::ostream &stream) const

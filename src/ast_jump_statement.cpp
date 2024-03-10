@@ -1,10 +1,10 @@
 #include "ast_jump_statement.hpp"
 
-void ReturnStatement::EmitRISC(std::ostream &stream, Context &context, int destReg) const
+void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
     if (expression_ != nullptr)
     {
-        expression_->EmitRISC(stream, context, destReg);
+        expression_->EmitRISC(stream, context);
     }
     stream << "ret" << std::endl;
 }

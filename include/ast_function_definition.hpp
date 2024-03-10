@@ -18,7 +18,7 @@ public:
         delete declarator_;
         delete compound_statement_;
     };
-    void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
+    void EmitRISC(std::ostream &stream, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };
 

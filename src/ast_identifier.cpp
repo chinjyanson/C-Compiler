@@ -1,6 +1,6 @@
 #include "ast_identifier.hpp"
 
-void Identifier::EmitRISC(std::ostream &stream, Context &context, int destReg) const
+void Identifier::EmitRISC(std::ostream &stream, Context &context) const
 {
     stream << identifier_;
 }
