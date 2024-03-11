@@ -10,6 +10,7 @@ class Context
 {
 public:
     /* TODO decide what goes inside here */
+    std::string destReg;
 
     // Register table:
     std::map<std::string, int> register_allocs; // Variable name - register number

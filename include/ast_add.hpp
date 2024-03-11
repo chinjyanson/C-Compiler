@@ -1,16 +1,17 @@
-#ifndef AST_TYPE_SPECIFIER
-#define AST_TYPE_SPECIFIER
+#ifndef AST_ADD_HPP
+#define AST_ADD_HPP
 
 #include "ast_node.hpp"
 
-class TypeSpecifier : public Node
+class AddOp : public Node
 {
 private:
-    std::string type_;
+    Node *left_;
+    Node *right_;
 
 public:
-    TypeSpecifier(std::string type) : type_(type){};
-    ~TypeSpecifier(){};
+    AddOp(Node *left, Node *right) : left_(left), right_(right) {}
+
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
 };

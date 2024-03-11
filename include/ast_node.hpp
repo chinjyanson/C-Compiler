@@ -14,8 +14,9 @@ protected:
 public:
     Node(){};
     virtual ~Node();
-    virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
+    virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
+    virtual std::string GetValue() const = 0;
 };
 
 // Represents a list of nodes.
@@ -36,7 +37,7 @@ public:
     }
 
     void PushBack(Node *item);
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     virtual void Print(std::ostream &stream) const override;
 };
 

@@ -1,6 +1,6 @@
 #include "ast_constant.hpp"
 
-void IntConstant::EmitRISC(std::ostream &stream, Context &context) const
+void IntConstant::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
     stream << "li a0, " << value_ << std::endl;
 }

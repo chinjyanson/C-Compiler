@@ -11,7 +11,7 @@ private:
 public:
     IntConstant(int value) : value_(value) {}
 
-    void EmitRISC(std::ostream &stream, Context &context) const override;
+    void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
 };
 
