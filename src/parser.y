@@ -129,7 +129,7 @@ multiplicative_expression
 
 additive_expression
 	: multiplicative_expression { $$ = $1; }
-	| additive_expression '+' multiplicative_expression {}
+	| additive_expression '+' multiplicative_expression { $$ = new Add($1, $3); }
 	| additive_expression '-' multiplicative_expression
 	;
 
@@ -203,7 +203,7 @@ assignment_operator
 	;
 
 expression
-	: assignment_expression { $$ = $1; } // evaluate expression here
+	: assignment_expression { $$ = $1; }
 	| expression ',' assignment_expression
 	;
 

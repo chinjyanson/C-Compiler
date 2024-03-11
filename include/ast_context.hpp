@@ -2,6 +2,7 @@
 #define AST_CONTEXT_HPP
 
 #include <map>
+#include <string>
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
@@ -10,7 +11,6 @@ class Context
 {
 public:
     /* TODO decide what goes inside here */
-    std::string destReg;
 
     // Register table:
     std::map<std::string, int> register_allocs; // Variable name - register number
@@ -39,7 +39,7 @@ public:
 
 
     // Generic register stuff
-    void allocateRegister(int i){
+    void useRegister(int i){
         registers[i] = 1;
     }
 
@@ -47,10 +47,10 @@ public:
         registers[i] = 0;
     }
 
-    int findFreeRegister(){
+    int getFreeRegister(){
         for (int i = 5; i < 31; i++){
             if (registers[i] == 0 ){
-                allocateRegister(i);
+                useRegister(i);
                 return i;
             }
         }
@@ -60,7 +60,7 @@ public:
     int findParamReg(){
         for (int i = 10; i < 17; i++){
             if (registers[i] == 0 ){
-                allocateRegister(i);
+                useRegister(i);
                 return i;
             }
         }
