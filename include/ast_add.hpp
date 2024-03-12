@@ -11,7 +11,10 @@ private:
 
 public:
     Add(Node *left, Node *right) : left_(left), right_(right) {}
-
+    ~Add() {
+        delete left_;
+        delete right_;
+    }
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
 };

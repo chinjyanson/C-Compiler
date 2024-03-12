@@ -12,5 +12,7 @@ void Add::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 }
 
 void Add::Print(std::ostream &stream) const {
-
+    left_->Print(stream);
+    stream << " + ";
+    right_->Print(stream);
 }
