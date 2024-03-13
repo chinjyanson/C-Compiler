@@ -14,6 +14,7 @@
 #include "ast_constant.hpp"
 #include "ast_context.hpp"
 #include "ast_add.hpp"
+#include "ast_variable_init.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

@@ -12,8 +12,10 @@ class Context
 public:
     /* TODO decide what goes inside here */
 
-    // Register table:
-    std::map<std::string, int> register_allocs; // Variable name - register number
+    // Free memory stack offset
+    int mem_offset = -16;
+    // Variable stored table:
+    std::map<std::string, int> variable_allocs; // Variable name - stack offset
 
     //Global variable table:
     std::map<std::string, std::string> variables; // Variable name - Type
@@ -68,7 +70,17 @@ public:
     }
 
     //Setters
-    void addVariable(std::string variable_name, std::string variable_type){
+    void allocateVariable(std::string variable_name, std::string variable_type){
+        if (variable_type == "int"){
+            mem_offset -= 4;
+        }
+        if (variable_type == "double"){
+            mem_offset -= 8;
+        }
+        if (variable_type == "long"){
+            mem_offset -= 8;
+        }
+        variable_allocs[variable_name] = mem_offset;
         variables[variable_name] = variable_type;
     }
     void addFunction(std::string func_name, std::string func_type){
@@ -78,8 +90,8 @@ public:
 
     //Getters
     int findVariable(std::string variable_name) const {
-        auto it = register_allocs.find(variable_name);
-        if (it == register_allocs.end()) {
+        auto it = variable_allocs.find(variable_name);
+        if (it == variable_allocs.end()) {
             return -1;
         }
         return it->second;
