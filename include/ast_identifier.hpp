@@ -13,7 +13,7 @@ public:
     ~Identifier(){};
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
-    std::string ReturnID(){};
+    virtual std::string ReturnID();
 };
 
 #endif

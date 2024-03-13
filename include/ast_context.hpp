@@ -70,7 +70,7 @@ public:
     }
 
     //Setters
-    void allocateVariable(std::string variable_name, std::string variable_type){
+    int allocateVariable(std::string variable_name, std::string variable_type){
         if (variable_type == "int"){
             mem_offset -= 4;
         }
@@ -82,6 +82,7 @@ public:
         }
         variable_allocs[variable_name] = mem_offset;
         variables[variable_name] = variable_type;
+        return mem_offset;
     }
     void addFunction(std::string func_name, std::string func_type){
         functions[func_name] = func_type;
