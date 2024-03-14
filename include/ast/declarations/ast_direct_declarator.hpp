@@ -10,7 +10,7 @@ private:
     Identifier *identifier_;
 
 public:
-    DirectDeclarator(Identifier *identifier) : identifier_(identifier){};
+    DirectDeclarator(Node *identifier) : identifier_(dynamic_cast<Identifier*>(identifier)){};
     ~DirectDeclarator()
     {
         delete identifier_;
