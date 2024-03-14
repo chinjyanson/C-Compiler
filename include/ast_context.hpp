@@ -84,6 +84,7 @@ public:
         }
         return it->second;
     }
+    
     std::string getVariableType(std::string variable_name) const {
         auto it = variables.find(variable_name);
         if (it == variables.end()) {
