@@ -1,5 +1,5 @@
-#ifndef AST_DECLARATIONS.HPP
-#define AST_DECLARATIONS.HPP
+#ifndef AST_DECLARATIONS_HPP
+#define AST_DECLARATIONS_HPP
 
 #include "ast_node.hpp"
 

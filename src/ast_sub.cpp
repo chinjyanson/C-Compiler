@@ -9,6 +9,8 @@ void Sub::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
     right_->EmitRISC(stream, context, right_reg);
     stream << "add x    " << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
 
+    context.freeRegister(left_reg);
+    context.freeRegister(right_reg);
 }
 
 void Sub::Print(std::ostream &stream) const {

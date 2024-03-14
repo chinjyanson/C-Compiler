@@ -9,6 +9,10 @@ void Multiply::EmitRISC(std::ostream &stream, Context &context, int destReg) con
     right_->EmitRISC(stream, context, right_reg);
     stream << "mul x    " << destReg << ", x" << left_reg << ", x0" << std::endl;
 
+    context.freeRegister(left_reg); 
+    context.freeRegister(right_reg);
+    
+
 }
 
 void Multiply::Print(std::ostream &stream) const {

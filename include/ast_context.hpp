@@ -21,7 +21,7 @@ public:
     std::map<std::string, std::string> variables; // Variable name - Type
 
     //Function table:
-    std::map<std::string, std::string> functions; // Name - Type
+    std::map<std::string, std::string> functions; // Name   - Type
     std::map<std::string, std::map<std::string, std::string>> function_params; // Name - Param list (Name - Type)
     std::map<std::string, std::map<std::string, std::string>> function_vars; // Name - Local variable list (Name - Type)
 

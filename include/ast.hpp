@@ -17,7 +17,7 @@
 #include "./ast/operators/ast_sub.hpp"
 #include "./ast/operators/ast_multiply.hpp"
 #include "./ast/operators/ast_divide.hpp"
-#include "ast_add.hpp"
+#include "./ast/operators/ast_add.hpp"
 #include "ast_variable_init.hpp"
 
 extern Node *ParseAST(std::string file_name);

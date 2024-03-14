@@ -9,6 +9,8 @@ void Divide::EmitRISC(std::ostream &stream, Context &context, int destReg) const
     right_->EmitRISC(stream, context, right_reg);
     stream << "div x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
 
+    context.freeRegister(left_reg);
+    context.freeRegister(right_reg);
 }
 
 void Divide::Print(std::ostream &stream) const {
