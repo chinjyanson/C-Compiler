@@ -72,7 +72,7 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER
+	: IDENTIFIER // VARIABLES ARE USED HERE FOR CALLING I THINK
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
@@ -213,7 +213,7 @@ constant_expression
 
 declaration
 	: declaration_specifiers ';'
-	| declaration_specifiers init_declarator_list ';' // new declarations { $$ = new Declarations($1, $2); }
+	| declaration_specifiers init_declarator_list ';' { $$ = new Declarations($1, $2); }
 	;
 
 declaration_specifiers
@@ -230,7 +230,7 @@ init_declarator_list
 
 init_declarator
 	: declarator
-	| declarator '=' initializer // new variable assignement { $$ = new VariableInit($1, $3); }
+	| declarator '=' initializer { $$ = new VariableInit($1, $3); }
 	;
 
 storage_class_specifier
