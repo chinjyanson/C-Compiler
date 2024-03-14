@@ -9,3 +9,7 @@ void Identifier::Print(std::ostream &stream) const
 {
     stream << identifier_;
 };
+
+std::string Identifier::ReturnID(){
+    return identifier_;
+}
