@@ -7,8 +7,12 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
     //but then how do you seperate function names and variable names??
     // will i need this for pointers? maybe, i'll see when i get to pointers ig
 
-    //load the init value into said register
-    initializer_->EmitRISC(stream, context, destReg); //this'll put the value into destReg var_reg (li reg [value])
+
+    // check if not null pointer
+    if(initializer_!=nullptr){
+        //load the init value into said register
+        initializer_->EmitRISC(stream, context, destReg); //this'll put the value into destReg var_reg (li reg [value])
+    }
 
     std::string variable_name = declarator_->ReturnID();
     std::string variable_type = context.getVariableType(variable_name);
@@ -25,3 +29,7 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
 }
 
 void VariableInit::Print(std::ostream &stream) const {}
+
+std::string VariableInit::returnName() const {
+    return declarator_->ReturnID();
+}
