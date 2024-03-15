@@ -193,7 +193,7 @@ assignment_operator
 	| MUL_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
-	| ADD_ASSIGN
+	| ADD_ASSIGN 
 	| SUB_ASSIGN
 	| LEFT_ASSIGN
 	| RIGHT_ASSIGN
@@ -318,7 +318,9 @@ direct_declarator
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')'
+	| direct_declarator '(' parameter_list ')'{
+		$$ = new DeclaratorWithParameters($1, $3); 
+	}
 	| direct_declarator '(' identifier_list ')'
 	| direct_declarator '(' ')' {
 		$$ = new DirectDeclarator($1);
@@ -331,8 +333,8 @@ pointer
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration {$$ = $1;}
+	| parameter_list ',' parameter_declaration 
 	;
 
 parameter_declaration
