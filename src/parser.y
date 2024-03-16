@@ -249,7 +249,9 @@ type_specifier
 		$$ = new TypeSpecifier("int");
 	}
 	| LONG
-	| FLOAT
+	| FLOAT {
+		$$ = new TypeSpecifier("float");
+	}
 	| DOUBLE
 	| SIGNED
 	| UNSIGNED
@@ -333,8 +335,8 @@ pointer
 	;
 
 parameter_list
-	: parameter_declaration {$$ = $1;}
-	| parameter_list ',' parameter_declaration 
+	: parameter_declaration {$$ = new NodeList($1);}
+	| parameter_list ',' parameter_declaration { $1->PushBack($3); $$=$1; }
 	;
 
 parameter_declaration

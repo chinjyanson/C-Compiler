@@ -15,4 +15,16 @@ public:
     void Print(std::ostream &stream) const override;
 };
 
+
+class FloatConstant : public Node
+{
+private:
+    float value_;
+public: 
+    FloatConstant(float value) : value_(value) {}
+
+    void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
+    void Print(std::ostream &stream) const override;
+};
+
 #endif
