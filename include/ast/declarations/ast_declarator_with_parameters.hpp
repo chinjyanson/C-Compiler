@@ -8,9 +8,9 @@ class DeclaratorWithParameters : public Node
 {
 private:
     DirectDeclarator *declarator_;
-    Node *parameter_list_;
+    NodeList *parameter_list_;
 public:
-    DeclaratorWithParameters(Node *declarator, Node *parameter_list) : declarator_(dynamic_cast<DirectDeclarator*>(declarator)), parameter_list_(parameter_list){};
+    DeclaratorWithParameters(Node *declarator, NodeList *parameter_list) : declarator_(dynamic_cast<DirectDeclarator*>(declarator)), parameter_list_(parameter_list){};
     ~DeclaratorWithParameters()
     {
         delete declarator_;
