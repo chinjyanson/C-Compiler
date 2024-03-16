@@ -2,8 +2,8 @@
 
 void DeclaratorWithParameters::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    declarator_->EmitRISC(stream, context, destReg);
-    parameter_list_->EmitRISC(stream, context, destReg);
+    declarator_->EmitRISC(stream, context, destReg); // this would probably just print the name
+    parameter_list_->EmitRISC(stream, context, destReg); // this should initliaise the params
 }
 
 void DeclaratorWithParameters::Print(std::ostream &stream) const

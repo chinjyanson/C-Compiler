@@ -349,7 +349,7 @@ parameter_list
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator // SET UP PARAMETERS HERE
+	: declaration_specifiers declarator { $$ = new Parameter($1, $2); }
 	| declaration_specifiers abstract_declarator // what is this
 	| declaration_specifiers // why would you do this
 	;
