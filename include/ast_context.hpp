@@ -70,6 +70,9 @@ public:
     }
 
     //Setters
+    void declareVariable(std::string variable_name, std::string variable_type){
+        variables[variable_name] = variable_type;
+    }
     int allocateVariable(std::string variable_name, std::string variable_type){
         if (variable_type == "int"){
             mem_offset -= 4;
@@ -81,15 +84,22 @@ public:
             mem_offset -= 8;
         }
         variable_allocs[variable_name] = mem_offset;
-        variables[variable_name] = variable_type;
+        declareVariable(variable_name, variable_type);
         return mem_offset;
     }
     void addFunction(std::string func_name, std::string func_type){
         functions[func_name] = func_type;
-        //might add the params here idk yet
+        // might add the params here idk yet
     }
 
     //Getters
+    bool checkVariable(std::string variable_name) const {
+        auto it = variables.find(variable_name);
+        if (it == variables.end()) {
+            return false;
+        }
+        return true;
+    }
     int findVariable(std::string variable_name) const {
         auto it = variable_allocs.find(variable_name);
         if (it == variable_allocs.end()) {
@@ -97,7 +107,7 @@ public:
         }
         return it->second;
     }
-    
+
     std::string getVariableType(std::string variable_name) const {
         auto it = variables.find(variable_name);
         if (it == variables.end()) {

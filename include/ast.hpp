@@ -20,6 +20,8 @@
 #include "./ast/operators/ast_add.hpp"
 #include "ast_declarations.hpp"
 #include "ast_variable_init.hpp"
+#include "ast_variable_call.hpp"
+#include "ast_multiline.hpp"
 #include "./ast/declarations/ast_declarator_with_parameters.hpp"
 
 extern Node *ParseAST(std::string file_name);

@@ -6,3 +6,7 @@ void TypeSpecifier::Print(std::ostream &stream) const
 {
     stream << type_;
 }
+
+std::string TypeSpecifier::returnType() const{
+    return type_;
+}

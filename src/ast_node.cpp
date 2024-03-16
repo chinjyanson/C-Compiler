@@ -8,6 +8,10 @@ Node::~Node()
     }
 }
 
+std::string Node::ReturnID() const{
+    return "you should not be here";
+}
+
 void NodeList::PushBack(Node *item)
 {
     nodes_.push_back(item);
@@ -35,4 +39,17 @@ void NodeList::Print(std::ostream &stream) const
         }
         node->Print(stream);
     }
+}
+
+std::vector<std::string> NodeList::returnIDs() const{
+    std::vector<std::string> id_list;
+    for (auto node : nodes_)
+    {
+        if (node == nullptr)
+        {
+            continue;
+        }
+        id_list.push_back(node->ReturnID());
+    }
+    return id_list;
 }

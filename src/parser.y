@@ -30,13 +30,13 @@
 %type <node> translation_unit external_declaration function_definition primary_expression postfix_expression argument_expression_list
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
-%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
+%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
-%type <node> compound_statement declaration_list expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list
+%type <nodes> statement_list init_declarator_list declaration_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -72,7 +72,7 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER // VARIABLES ARE USED HERE FOR CALLING I THINK
+	: IDENTIFIER { new VariableCall(*$1); delete $1; }
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
@@ -224,12 +224,12 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator
-	| init_declarator_list ',' init_declarator
+	: init_declarator { $$ = new NodeList($1); }
+	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$=$1; }
 	;
 
 init_declarator
-	: declarator
+	: declarator { new VariableInit($1, nullptr); }
 	| declarator '=' initializer { $$ = new VariableInit($1, $3); }
 	;
 
@@ -411,14 +411,13 @@ compound_statement
 		$$ = $2;
 	}
 	| '{' declaration_list statement_list '}'  {
-		// TODO: correct this
-		$$ = nullptr;
+		$$ = new Multiline($2, $3);
 	}
 	;
 
 declaration_list
-	: declaration
-	| declaration_list declaration
+	: declaration { $$ = new NodeList($1); }
+	| declaration_list declaration { $1->PushBack($2); $$=$1; }
 	;
 
 statement_list
