@@ -32,11 +32,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list init_declarator_list declaration_list
+%type <nodes> statement_list init_declarator_list declaration_list parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -72,7 +72,7 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER { new VariableCall(*$1); delete $1; }
+	: IDENTIFIER { $$ = new VariableCall(*$1); delete $1; }
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
@@ -193,7 +193,7 @@ assignment_operator
 	| MUL_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
-	| ADD_ASSIGN 
+	| ADD_ASSIGN
 	| SUB_ASSIGN
 	| LEFT_ASSIGN
 	| RIGHT_ASSIGN
@@ -321,7 +321,7 @@ direct_declarator
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'{
-		$$ = new DeclaratorWithParameters($1, $3); 
+		$$ = new DeclaratorWithParameters($1, $3);
 	}
 	| direct_declarator '(' identifier_list ')'
 	| direct_declarator '(' ')' {
