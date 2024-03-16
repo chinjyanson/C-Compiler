@@ -1,9 +1,7 @@
-#ifndef AST_VARIABLE_DECL_HPP
-#define AST_VARIABLE_DECL_HPP
+#ifndef AST_VARIABLE_CALL_HPP
+#define AST_VARIABLE_CALL_HPP
 
 #include "ast_node.hpp"
-#include "./ast/declarations/ast_direct_declarator.hpp"
-#include "ast_identifier.hpp"
 
 #include <string>
 
