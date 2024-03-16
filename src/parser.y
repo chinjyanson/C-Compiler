@@ -34,9 +34,9 @@
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
-%type <node> compound_statement declaration_list expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list init_declarator_list
+%type <nodes> statement_list init_declarator_list declaration_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -72,7 +72,7 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER { new VariableCall($1); }
+	: IDENTIFIER { new VariableCall(*$1); delete $1; }
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
@@ -407,14 +407,13 @@ compound_statement
 		$$ = $2;
 	}
 	| '{' declaration_list statement_list '}'  {
-		// TODO: correct this
-		$$ = nullptr;
+		$$ = new Multiline($2, $3);
 	}
 	;
 
 declaration_list
-	: declaration
-	| declaration_list declaration //
+	: declaration { $$ = new NodeList($1); }
+	| declaration_list declaration { $1->PushBack($2); $$=$1; }
 	;
 
 statement_list

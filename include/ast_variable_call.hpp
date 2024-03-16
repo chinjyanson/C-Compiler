@@ -10,12 +10,12 @@
 class VariableCall : public Node
 {
 public:
-    VariableCall(Node *declarator) : declarator_(dynamic_cast<Identifier*>(declarator)) {};
+    VariableCall(std::string identifier) : identifier_(identifier) {};
     ~VariableCall(){};
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
 private:
-    Identifier *declarator_;
+    std::string identifier_;
 };
 
 

@@ -2,7 +2,8 @@
 
 void VariableCall::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    std::string variable_name = declarator_->ReturnID();
+    stream << "CALLED" << std::endl;
+    std::string variable_name = identifier_;
 
     bool check_var = context.checkVariable(variable_name);
     if(check_var == true){

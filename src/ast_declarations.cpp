@@ -2,7 +2,6 @@
 
 void Declarations::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-
     // get the type
     std::string typeName = dec_spec_->returnType();
     // get a list of all the declarator names
