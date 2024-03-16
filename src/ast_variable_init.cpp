@@ -2,8 +2,6 @@
 
 void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-
-    //declarator_->EmitRISC(stream, context, destReg); this is just gonna do the name into the stream, i dont need that
     //but then how do you seperate function names and variable names??
     // will i need this for pointers? maybe, i'll see when i get to pointers ig
 

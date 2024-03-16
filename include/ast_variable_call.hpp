@@ -12,6 +12,7 @@ public:
     ~VariableCall(){};
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
+    virtual void UpdateVar(std::ostream &stream, Context &context, int destReg) const;
 private:
     std::string identifier_;
 };

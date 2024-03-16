@@ -185,12 +185,23 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	| unary_expression assignment_operator assignment_expression
+	// | unary_expression assignment_operator assignment_expression { $$ = new AssignOp($1, $3); } //this also originally had 3 args
+    | unary_expression '=' assignment_expression { $$ = new AssignOp($1, $3); }
+	| unary_expression MUL_ASSIGN assignment_expression { $$ = new AssignOp($1, new MultiplyOp($1, $3)); }
+	| unary_expression DIV_ASSIGN assignment_expression { $$ = new AssignOp($1, new DivideOp($1, $3)); }
+	| unary_expression MOD_ASSIGN assignment_expression
+	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
+	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
+	| unary_expression LEFT_ASSIGN assignment_expression
+	| unary_expression RIGHT_ASSIGN assignment_expression
+	| unary_expression AND_ASSIGN assignment_expression
+	| unary_expression XOR_ASSIGN assignment_expression
+	| unary_expression OR_ASSIGN assignment_expression
 	;
 
 assignment_operator
-	: '='
-	| MUL_ASSIGN
+	: '=' // i was originally doing it here, but it complained at me saying it wanted to be a string pointer
+	| MUL_ASSIGN  // so i just decided to circumvent it entirely.
 	| DIV_ASSIGN
 	| MOD_ASSIGN
 	| ADD_ASSIGN
@@ -229,7 +240,7 @@ init_declarator_list
 	;
 
 init_declarator
-	: declarator { new VariableInit($1, nullptr); }
+	: declarator {$$ = new VariableInit($1, nullptr); }
 	| declarator '=' initializer { $$ = new VariableInit($1, $3); }
 	;
 
@@ -320,9 +331,7 @@ direct_declarator
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')'{
-		$$ = new DeclaratorWithParameters($1, $3);
-	}
+	| direct_declarator '(' parameter_list ')' // { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')'
 	| direct_declarator '(' ')' {
 		$$ = new DirectDeclarator($1);

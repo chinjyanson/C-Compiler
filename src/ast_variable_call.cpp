@@ -20,7 +20,17 @@ void VariableCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     // complain
     // throw an error
     // idk how to actually do that in code tho ngl
+}
 
+void VariableCall::UpdateVar(std::ostream &stream, Context &context, int destReg) const {
+    std::string variable_name = identifier_;
+    bool check_var = context.checkVariable(variable_name);
+    if(check_var == true){
+        int mem_offset = context.findVariable(variable_name);
+        if(mem_offset != -1){
+            stream << "sw x" << destReg << ", " << mem_offset << "(s0)" << std::endl;
+        }
+    }
 }
 
 void VariableCall::Print(std::ostream &stream) const {}

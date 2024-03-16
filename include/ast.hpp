@@ -17,6 +17,7 @@
 #include "./ast/operators/ast_sub_op.hpp"
 #include "./ast/operators/ast_multiply_op.hpp"
 #include "./ast/operators/ast_divide_op.hpp"
+#include "ast_assign_op.hpp"
 #include "ast_declarations.hpp"
 #include "ast_variable_init.hpp"
 #include "ast_variable_call.hpp"
