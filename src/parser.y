@@ -332,7 +332,7 @@ direct_declarator
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
-	| direct_declarator '(' identifier_list ')'
+	| direct_declarator '(' identifier_list ')' //im guessing this is for function calls with params, or no, check
 	| direct_declarator '(' ')' {
 		$$ = new DirectDeclarator($1);
 	}

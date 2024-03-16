@@ -2,15 +2,14 @@
 #define AST_DECLARATOR_WITH_PARAMETERS_HPP
 
 #include "ast_node.hpp"
-#include "ast_direct_declarator.hpp"
 
 class DeclaratorWithParameters : public Node
 {
 private:
-    DirectDeclarator *declarator_;
+    Node *declarator_;
     Node *parameter_list_;
 public:
-    DeclaratorWithParameters(Node *declarator, Node *parameter_list) : declarator_(dynamic_cast<DirectDeclarator*>(declarator)), parameter_list_(parameter_list){};
+    DeclaratorWithParameters(Node *declarator, Node *parameter_list) : declarator_(declarator), parameter_list_(parameter_list){};
     ~DeclaratorWithParameters()
     {
         delete declarator_;
