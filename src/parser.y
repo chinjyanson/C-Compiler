@@ -122,15 +122,15 @@ cast_expression
 
 multiplicative_expression
 	: cast_expression { $$ = $1; }
-	| multiplicative_expression '*' cast_expression { $$ = new Multiply($1, $3); }
+	| multiplicative_expression '*' cast_expression { $$ = new MultiplyOp($1, $3); }
 	| multiplicative_expression '/' cast_expression { $$ = new DivideOp($1, $3); }
 	| multiplicative_expression '%' cast_expression
 	;
 
 additive_expression
 	: multiplicative_expression { $$ = $1; }
-	| additive_expression '+' multiplicative_expression { $$ = new Add($1, $3); }
-	| additive_expression '-' multiplicative_expression { $$ = new Sub($1, $3); }
+	| additive_expression '+' multiplicative_expression { $$ = new AddOp($1, $3); }
+	| additive_expression '-' multiplicative_expression { $$ = new SubOp($1, $3); }
 	;
 
 shift_expression
