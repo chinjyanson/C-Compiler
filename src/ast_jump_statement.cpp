@@ -4,9 +4,7 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context, int destR
 {
     if (expression_ != nullptr)
     {
-        stream << "not null for sure" << std::endl;
         expression_->EmitRISC(stream, context, destReg);
-        stream << "done" << std::endl;
     }
     stream << "ret" << std::endl;
 }

@@ -2,7 +2,6 @@
 
 void VariableCall::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    stream << "CALLED" << std::endl;
     std::string variable_name = identifier_;
 
     bool check_var = context.checkVariable(variable_name);

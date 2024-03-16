@@ -72,7 +72,7 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER { new VariableCall(*$1); delete $1; }
+	: IDENTIFIER { $$ = new VariableCall(*$1); delete $1; }
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
