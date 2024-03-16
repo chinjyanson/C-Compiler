@@ -349,9 +349,9 @@ parameter_list
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator
-	| declaration_specifiers abstract_declarator
-	| declaration_specifiers
+	: declaration_specifiers declarator // SET UP PARAMETERS HERE
+	| declaration_specifiers abstract_declarator // what is this
+	| declaration_specifiers // why would you do this
 	;
 
 identifier_list
