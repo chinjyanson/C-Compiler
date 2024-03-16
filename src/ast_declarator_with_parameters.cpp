@@ -4,8 +4,6 @@ void DeclaratorWithParameters::EmitRISC(std::ostream &stream, Context &context, 
 {
     declarator_->EmitRISC(stream, context, destReg);
     parameter_list_->EmitRISC(stream, context, destReg);
-    stream << ":" << std::endl;
-
 }
 
 void DeclaratorWithParameters::Print(std::ostream &stream) const
