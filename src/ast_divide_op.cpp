@@ -1,6 +1,6 @@
-#include "./ast/operators/ast_divide.hpp"
+#include "./ast/operators/ast_divide_op.hpp"
 
-void Divide::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
+void DivideOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
     int left_reg = context.getFreeRegister();
     int right_reg = context.getFreeRegister();
@@ -13,7 +13,7 @@ void Divide::EmitRISC(std::ostream &stream, Context &context, int destReg) const
     context.freeRegister(right_reg);
 }
 
-void Divide::Print(std::ostream &stream) const {
+void DivideOp::Print(std::ostream &stream) const {
     left_->Print(stream);
     stream << " / ";
     right_->Print(stream);

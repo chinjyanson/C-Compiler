@@ -1,21 +1,20 @@
-#include "./ast/operators/ast_add.hpp"
+#include "./ast/operators/ast_multiply_op.hpp"
 
-void Add::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
+void MultiplyOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
     int left_reg = context.getFreeRegister();
     int right_reg = context.getFreeRegister();
 
     left_->EmitRISC(stream, context, left_reg);
     right_->EmitRISC(stream, context, right_reg);
-    stream << "add x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
+    stream << "mul x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
 
     context.freeRegister(left_reg);
     context.freeRegister(right_reg);
-
 }
 
-void Add::Print(std::ostream &stream) const {
+void MultiplyOp::Print(std::ostream &stream) const {
     left_->Print(stream);
-    stream << " + ";
+    stream << " * ";
     right_->Print(stream);
 }

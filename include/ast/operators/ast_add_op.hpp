@@ -1,17 +1,17 @@
-#ifndef AST_ADD_HPP
-#define AST_ADD_HPP
+#ifndef AST_ADD_OP_HPP
+#define AST_ADD_OP_HPP
 
 #include "ast_node.hpp"
 
-class Add : public Node
+class AddOp : public Node
 {
 private:
     Node *left_;
     Node *right_;
 
 public:
-    Add(Node *left, Node *right) : left_(left), right_(right) {}
-    virtual ~Add() {
+    AddOp(Node *left, Node *right) : left_(left), right_(right) {}
+    virtual ~AddOp() {
         delete left_;
         delete right_;
     }

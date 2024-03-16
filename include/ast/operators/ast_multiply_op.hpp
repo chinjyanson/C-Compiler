@@ -1,17 +1,17 @@
-#ifndef AST_DIVIDE_HPP
-#define AST_DIVIDE_HPP
+#ifndef AST_DIVIDE_OP_HPP
+#define AST_DIVIDE_OP_HPP
 
 #include "ast_node.hpp"
 
-class Multiply : public Node
+class MultiplyOp : public Node
 {
     private:
         Node *left_;
         Node *right_;
 
     public:
-        Multiply(Node *left, Node *right) : left_(left), right_(right) {}
-        virtual ~Multiply() {
+        MultiplyOp(Node *left, Node *right) : left_(left), right_(right) {}
+        virtual ~MultiplyOp() {
             delete left_;
             delete right_;
         }

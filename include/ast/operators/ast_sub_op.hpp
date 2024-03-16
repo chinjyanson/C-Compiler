@@ -1,17 +1,17 @@
-#ifndef AST_SUB_HPP
-#define AST_SUB_HPP
+#ifndef AST_SUB_OP_HPP
+#define AST_SUB_OP_HPP
 
 #include "ast_node.hpp"
 
-class Sub : public Node
+class SubOp : public Node
 {
     private:
         Node *left_;
         Node *right_;
 
     public:
-        Sub(Node *left, Node *right) : left_(left), right_(right) {}
-        virtual ~Sub() {
+        SubOp(Node *left, Node *right) : left_(left), right_(right) {}
+        virtual ~SubOp() {
             delete left_;
             delete right_;
         }
