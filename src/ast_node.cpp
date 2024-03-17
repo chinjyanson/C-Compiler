@@ -8,6 +8,11 @@ Node::~Node()
     }
 }
 
+void Node::Print(std::ostream &stream) const
+{
+    stream << "you should be here";
+}
+
 std::string Node::ReturnID() const{
     return "you should not be here";
 }

@@ -49,6 +49,9 @@ int main(int argc, char **argv)
 
     // Parse input and generate AST
     auto ast_root = Parse(command_line_arguments);
+
+    ast_root->Print(std::cout);
+
     if (ast_root == nullptr)
     {
         // Check something was actually returned by parseAST().
