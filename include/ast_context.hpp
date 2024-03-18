@@ -30,15 +30,15 @@ public:
     // Available registers
     int registers[32] =
     { 1, //x0 zero address: index = 0
-      1, //x1 ra return address: index = 1
-      1,  //x2 sp stack pointer: index = 2
-      1,  //x3 gp global pointer: index = 3
-      1, // Thread pointer: index = 4
-      0, 0, 0,  //t0-t2 Temporary registers: index = 5-7
-      1, 1,  //s0-s1 Callee-saved registers: index = 8-9
-      0, 0, 0, 0, 0, 0, 0, 0, //a0-a7 Argument registers: index = 10-17
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, //s2-s11 Callee-saved registers: index = 18-27
-      0, 0, 0, 0, //t3-t6 Temporary registers: index = 28-31
+    1, //x1 ra return address: index = 1
+    1,  //x2 sp stack pointer: index = 2
+    1,  //x3 gp global pointer: index = 3
+    1, // Thread pointer: index = 4
+    0, 0, 0,  //t0-t2 Temporary registers: index = 5-7
+    1, 1,  //s0-s1 Callee-saved registers: index = 8-9
+    0, 0, 0, 0, 0, 0, 0, 0, //a0-a7 Argument registers: index = 10-17
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, //s2-s11 Callee-saved registers: index = 18-27
+    0, 0, 0, 0, //t3-t6 Temporary registers: index = 28-31
     };
 
 
@@ -58,7 +58,7 @@ public:
                 return i;
             }
         }
-      return -1;
+    return -1;
     }
 
     int findParamReg(){
@@ -68,19 +68,23 @@ public:
                 return i;
             }
         }
-      return -1;
+    return -1;
     }
 
     //Setters
     void declareVariable(std::string variable_name, std::string variable_type){
         variables[variables.size()-1][variable_name] = variable_type;
     }
+    
     int allocateVariable(std::string variable_name, std::string variable_type){
         if (variable_type == "int"){
             mem_offset -= 4;
         }
         if (variable_type == "double"){
             mem_offset -= 8;
+        }
+        if (variable_type == "float"){
+            mem_offset -= 4;
         }
         if (variable_type == "long"){
             mem_offset -= 8;
@@ -134,8 +138,6 @@ public:
             return it->second;
         }
     }
-
-
 };
 
 #endif

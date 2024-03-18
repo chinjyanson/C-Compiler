@@ -111,7 +111,7 @@ unary_operator
 	| '*'
 	| '+'
 	| '-'
-	| '~'
+	| '~' 
 	| '!'
 	;
 
@@ -124,7 +124,7 @@ multiplicative_expression
 	: cast_expression { $$ = $1; }
 	| multiplicative_expression '*' cast_expression { $$ = new MultiplyOp($1, $3); }
 	| multiplicative_expression '/' cast_expression { $$ = new DivideOp($1, $3); }
-	| multiplicative_expression '%' cast_expression
+	| multiplicative_expression '%' cast_expression { $$ = new ModOp($1, $3);}
 	;
 
 additive_expression
@@ -143,39 +143,39 @@ relational_expression
 	: shift_expression { $$ = $1; }
 	| relational_expression '<' shift_expression
 	| relational_expression '>' shift_expression
-	| relational_expression LE_OP shift_expression
-	| relational_expression GE_OP shift_expression
+	| relational_expression LE_OP shift_expression {$$ = new LeOp($1, $3);}
+	| relational_expression GE_OP shift_expression {$$ = new GeOp($1, $3);}
 	;
 
 equality_expression
 	: relational_expression { $$ = $1; }
-	| equality_expression EQ_OP relational_expression
-	| equality_expression NE_OP relational_expression
+	| equality_expression EQ_OP relational_expression {$$ = new EqOp($1, $3);}
+	| equality_expression NE_OP relational_expression {$$ = new NeOp($1, $3);}
 	;
 
 and_expression
 	: equality_expression { $$ = $1; }
-	| and_expression '&' equality_expression
+	| and_expression '&' equality_expression { $$ = new BitwiseAnd($1, $3); }
 	;
 
 exclusive_or_expression
 	: and_expression { $$ = $1; }
-	| exclusive_or_expression '^' and_expression
+	| exclusive_or_expression '^' and_expression { $$ = new BitwiseXor($1, $3); }
 	;
 
 inclusive_or_expression
 	: exclusive_or_expression { $$ = $1; }
-	| inclusive_or_expression '|' exclusive_or_expression
+	| inclusive_or_expression '|' exclusive_or_expression { $$ = new BitwiseOr($1, $3); }
 	;
 
 logical_and_expression
 	: inclusive_or_expression { $$ = $1; }
-	| logical_and_expression AND_OP inclusive_or_expression
+	| logical_and_expression AND_OP inclusive_or_expression  
 	;
 
 logical_or_expression
 	: logical_and_expression { $$ = $1; }
-	| logical_or_expression OR_OP logical_and_expression
+	| logical_or_expression OR_OP logical_and_expression 
 	;
 
 conditional_expression
@@ -189,21 +189,21 @@ assignment_expression
     | unary_expression '=' assignment_expression { $$ = new AssignOp($1, $3); }
 	| unary_expression MUL_ASSIGN assignment_expression { $$ = new AssignOp($1, new MultiplyOp($1, $3)); }
 	| unary_expression DIV_ASSIGN assignment_expression { $$ = new AssignOp($1, new DivideOp($1, $3)); }
-	| unary_expression MOD_ASSIGN assignment_expression
+	| unary_expression MOD_ASSIGN assignment_expression {$$ = new AssignOp($1, new ModOp($1, $3));}
 	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
 	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
-	| unary_expression LEFT_ASSIGN assignment_expression
-	| unary_expression RIGHT_ASSIGN assignment_expression
-	| unary_expression AND_ASSIGN assignment_expression
-	| unary_expression XOR_ASSIGN assignment_expression
-	| unary_expression OR_ASSIGN assignment_expression
+	| unary_expression LEFT_ASSIGN assignment_expression 
+	| unary_expression RIGHT_ASSIGN assignment_expression 
+	| unary_expression AND_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseAnd($1, $3)); }
+	| unary_expression XOR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseXor($1, $3)); }
+	| unary_expression OR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseOr($1, $3)); }
 	;
 
 assignment_operator
 	: '=' // i was originally doing it here, but it complained at me saying it wanted to be a string pointer
 	| MUL_ASSIGN  // so i just decided to circumvent it entirely.
 	| DIV_ASSIGN
-	| MOD_ASSIGN
+	| MOD_ASSIGN 
 	| ADD_ASSIGN
 	| SUB_ASSIGN
 	| LEFT_ASSIGN
@@ -255,15 +255,11 @@ storage_class_specifier
 type_specifier
 	: VOID
 	| CHAR
-	| SHORT
-	| INT {
-		$$ = new TypeSpecifier("int");
-	}
-	| LONG
-	| FLOAT {
-		$$ = new TypeSpecifier("float");
-	}
-	| DOUBLE
+	| SHORT 
+	| INT { $$ = new TypeSpecifier("int");}
+	| LONG { $$ = new TypeSpecifier("long");}
+	| FLOAT { $$ = new TypeSpecifier("float");}
+	| DOUBLE{ $$ = new TypeSpecifier("double");}
 	| SIGNED
 	| UNSIGNED
   | struct_specifier
@@ -292,7 +288,7 @@ specifier_qualifier_list
 	;
 
 struct_declarator_list
-	: struct_declarator
+	: struct_declarator 
 	| struct_declarator_list ',' struct_declarator
 	;
 
@@ -329,7 +325,7 @@ direct_declarator
 		delete $1;
 	}
 	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
+	| direct_declarator '[' constant_expression ']' 
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')' //im guessing this is for function calls with params, or no, check

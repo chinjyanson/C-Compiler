@@ -1,4 +1,4 @@
-#include "./ast/operators/ast_multiply_op.hpp"
+#include "ast/operators/ast_multiply_op.hpp"
 
 void MultiplyOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 

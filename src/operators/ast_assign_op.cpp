@@ -13,4 +13,5 @@ void AssignOp::EmitRISC(std::ostream &stream, Context &context, int destReg) con
 }
 
 void AssignOp::Print(std::ostream &stream) const {
+    
 }

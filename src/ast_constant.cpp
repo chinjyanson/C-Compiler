@@ -12,7 +12,7 @@ void IntConstant::Print(std::ostream &stream) const
 
 void FloatConstant::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    stream << "li x" << destReg << ", " << value_ << std::endl;
+    stream << "fli x" << destReg << ", " << value_ << std::endl;
 }
 
 void FloatConstant::Print(std::ostream &stream) const

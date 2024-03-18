@@ -12,10 +12,14 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context, int destReg) co
     //declarator_->EmitRISC(stream, context, destReg); // this will print variable name into stream, no quiero
 
     if(typeName == "float"){
-        // it doesn't use the normal sw bc its big
+       stream << "fsw f" << param_reg << ", " << mem_offset << "(s0)" << std::endl;
     }
     else if(typeName == "double"){
         // same
+        stream << "fsw f" << param_reg << ", " << mem_offset << "(s0)" << std::endl;
+    }
+    else if(typeName == "long"){
+        stream << "sw x" << param_reg << ", " << mem_offset << "(s0)" << std::endl;
     }
     else{
         stream << "sw x" << param_reg << ", " << mem_offset << "(s0)" << std::endl;

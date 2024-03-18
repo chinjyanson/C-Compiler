@@ -1,4 +1,4 @@
-#include "./ast/declarations/ast_declarator_with_parameters.hpp"
+#include "ast/declarations/ast_declarator_with_parameters.hpp"
 
 void DeclaratorWithParameters::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
