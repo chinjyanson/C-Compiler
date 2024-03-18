@@ -1,4 +1,4 @@
-int f()
+int g()
 {
     int x;
     x = 10;

@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int f();
+int g();
 
 void test(double a)
 {
@@ -12,7 +12,7 @@ int main()
     printf("Hello from RISC-V\n");
 
     test(5.5);
-    printf("Example function returned: %d\n", f());
+    printf("Example function returned: %d\n", g());
 
-    return !(f() == 15);
+    return !(g() == 15);
 }
