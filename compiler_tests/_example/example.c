@@ -1,3 +1,7 @@
-int f(){
-    return 9+10;
+int g()
+{
+    int x;
+    x = 10;
+    x += 5;
+    return x;
 }

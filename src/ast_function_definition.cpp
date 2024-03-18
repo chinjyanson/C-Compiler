@@ -6,7 +6,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
     // TODO: these are just examples ones, make sure you understand
     // the concept of directives and correct them.
     stream << ".text" << std::endl;
-    stream << ".globl f" << std::endl; // so this just makes the function with name f global
+    // stream << ".globl f" << std::endl; // so this just makes the function with name f global MOVED TO DECs
     declarator_->EmitRISC(stream, context, destReg);
 
     if (compound_statement_ != nullptr)

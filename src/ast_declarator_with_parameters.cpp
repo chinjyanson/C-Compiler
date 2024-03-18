@@ -2,8 +2,11 @@
 
 void DeclaratorWithParameters::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
+    stream << ".globl "; // probably check its global from context first
     declarator_->EmitRISC(stream, context, destReg); // this would probably just print the name
-    stream << ":" << std::endl;
+    stream << std::endl; // if this does more than that, cry
+    declarator_->EmitRISC(stream, context, destReg);
+    stream << ":" << std::endl; //function defn
     parameter_list_->EmitRISC(stream, context, destReg); // this should initliaise the params
 }
 
