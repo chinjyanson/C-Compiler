@@ -24,6 +24,9 @@
 #include "ast_multiline.hpp"
 #include "./ast/declarations/ast_declarator_with_parameters.hpp"
 #include "ast_param_declaration.hpp"
+#include "./ast/operators/ast_bitwiseAnd.hpp"
+#include "./ast/operators/ast_bitwiseOr.hpp"
+#include "./ast/operators/ast_bitwiseXor.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

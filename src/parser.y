@@ -111,7 +111,7 @@ unary_operator
 	| '*'
 	| '+'
 	| '-'
-	| '~'
+	| '~' 
 	| '!'
 	;
 
@@ -192,11 +192,11 @@ assignment_expression
 	| unary_expression MOD_ASSIGN assignment_expression
 	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
 	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
-	| unary_expression LEFT_ASSIGN assignment_expression
-	| unary_expression RIGHT_ASSIGN assignment_expression
-	| unary_expression AND_ASSIGN assignment_expression
-	| unary_expression XOR_ASSIGN assignment_expression
-	| unary_expression OR_ASSIGN assignment_expression
+	| unary_expression LEFT_ASSIGN assignment_expression 
+	| unary_expression RIGHT_ASSIGN assignment_expression 
+	| unary_expression AND_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseAnd($1, $3)); }
+	| unary_expression XOR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseXor($1, $3)); }
+	| unary_expression OR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseOr($1, $3)); }
 	;
 
 assignment_operator
