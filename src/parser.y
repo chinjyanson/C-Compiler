@@ -189,7 +189,7 @@ assignment_expression
     | unary_expression '=' assignment_expression { $$ = new AssignOp($1, $3); }
 	| unary_expression MUL_ASSIGN assignment_expression { $$ = new AssignOp($1, new MultiplyOp($1, $3)); }
 	| unary_expression DIV_ASSIGN assignment_expression { $$ = new AssignOp($1, new DivideOp($1, $3)); }
-	| unary_expression MOD_ASSIGN assignment_expression
+	| unary_expression MOD_ASSIGN assignment_expression {$$ = new AssignOp($1, new ModOp($1, $3));}
 	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
 	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
 	| unary_expression LEFT_ASSIGN assignment_expression 
@@ -325,7 +325,7 @@ direct_declarator
 		delete $1;
 	}
 	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
+	| direct_declarator '[' constant_expression ']' 
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')' //im guessing this is for function calls with params, or no, check
