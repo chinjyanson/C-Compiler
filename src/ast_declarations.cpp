@@ -17,7 +17,3 @@ void Declarations::EmitRISC(std::ostream &stream, Context &context, int destReg)
 }
 
 void Declarations::Print(std::ostream &stream) const {}
-
-/* void Declarations::mapVariables(std::ostream &stream) {
-
-} */

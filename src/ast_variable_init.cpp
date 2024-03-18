@@ -14,10 +14,12 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
 
     std::string variable_name = declarator_->ReturnID();
     std::string variable_type = context.getVariableType(variable_name);
-    int check_var = context.findVariable(variable_name);
+    int check_var = context.checkCurrentScopeForVarAlloc(variable_name);
     if(check_var == -1){
+
         int mem_offset = context.allocateVariable(variable_name, variable_type);
         stream << "sw x" << destReg << ", " << mem_offset << "(s0)" << std::endl;
+
     }
     // else
     // complain
@@ -28,6 +30,6 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
 
 void VariableInit::Print(std::ostream &stream) const {}
 
-std::string VariableInit::returnName() const {
+std::string VariableInit::ReturnID() const {
     return declarator_->ReturnID();
 }

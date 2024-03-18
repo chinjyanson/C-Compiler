@@ -10,6 +10,6 @@ void Identifier::Print(std::ostream &stream) const
     stream << identifier_;
 };
 
-std::string Identifier::ReturnID(){
+std::string Identifier::ReturnID() const{
     return identifier_;
 }

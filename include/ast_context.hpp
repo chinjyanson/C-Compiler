@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
@@ -11,14 +12,15 @@ class Context
 {
 public:
     /* TODO decide what goes inside here */
+    bool is_function;
 
     // Free memory stack offset
     int mem_offset = -16;
     // Variable stored table:
-    std::map<std::string, int> variable_allocs; // Variable name - stack offset
+    std::vector<std::map<std::string, int>> variable_allocs; // Scope: Variable name - stack offset
 
     //Global variable table:
-    std::map<std::string, std::string> variables; // Variable name - Type
+    std::vector<std::map<std::string, std::string>> variables; // Scope: Variable name - Type
 
     //Function table:
     std::map<std::string, std::string> functions; // Name   - Type
@@ -71,7 +73,7 @@ public:
 
     //Setters
     void declareVariable(std::string variable_name, std::string variable_type){
-        variables[variable_name] = variable_type;
+        variables[variables.size()-1][variable_name] = variable_type;
     }
     int allocateVariable(std::string variable_name, std::string variable_type){
         if (variable_type == "int"){
@@ -83,7 +85,7 @@ public:
         if (variable_type == "long"){
             mem_offset -= 8;
         }
-        variable_allocs[variable_name] = mem_offset;
+        variable_allocs[variable_allocs.size()-1][variable_name] = mem_offset;
         declareVariable(variable_name, variable_type);
         return mem_offset;
     }
@@ -94,29 +96,67 @@ public:
 
     //Getters
     bool checkVariable(std::string variable_name) const {
-        auto it = variables.find(variable_name);
-        if (it == variables.end()) {
+        auto it = variables[variables.size()-1].find(variable_name);
+        if (it == variables[variables.size()-1].end()) {
             return false;
         }
         return true;
     }
-    int findVariable(std::string variable_name) const {
-        auto it = variable_allocs.find(variable_name);
-        if (it == variable_allocs.end()) {
+    int checkCurrentScopeForVarAlloc(std::string variable_name) const {
+        auto it = variable_allocs[variable_allocs.size()-1].find(variable_name);
+        if (it == variable_allocs[variable_allocs.size()-1].end()) {
             return -1;
         }
         return it->second;
     }
+    int findVariable(std::string variable_name) const {
+        for(int i = variable_allocs.size()-1; i >= 0; i--){
+            auto it = variable_allocs[i].find(variable_name);
+            if (it == variable_allocs[i].end()) {
+                if(i==0){
+                    return -1;
+                }
+                continue;
+            }
+            return it->second;
+        }
+    }
 
     std::string getVariableType(std::string variable_name) const {
-        auto it = variables.find(variable_name);
-        if (it == variables.end()) {
-            return "Variable not found";
+        for(int i = variables.size()-1; i >= 0; i--){
+            auto it = variables[i].find(variable_name);
+            if (it == variables[i].end()) {
+                if(i==0){
+                    return "Variable not found";
+                }
+                continue;
+            }
+            return it->second;
         }
-        return it->second;
     }
 
 
 };
 
 #endif
+
+
+// when entering a new scope:
+// create a new scope in the list
+// check if youre calling a compound list due to a function or not
+
+// store the size of the current variable list probably in the node cpp
+// store the value of the current mem_offset
+// store current state of is_function
+
+// if yes: (function)
+// push the current stack onto a seperate list so it's empty
+// increment the stack pointer by mem_offset so it can start afresh
+
+// if no: (just {} for ifs and stuff)
+// dont move the current vars away
+
+// at the end of the scope:
+// pop all the variables after the index[size] in the variable list
+// revert mem_offset
+// revert is_function

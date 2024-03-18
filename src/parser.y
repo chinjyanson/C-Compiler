@@ -395,7 +395,7 @@ initializer_list
 
 statement
 	: labeled_statement
-	| compound_statement
+	| compound_statement { $$ = new NestStatement($1); }
 	| expression_statement
 	| selection_statement
 	| iteration_statement
@@ -411,16 +411,16 @@ labeled_statement
 compound_statement
 	: '{' '}' {
 		// TODO: correct this
-		$$ = nullptr;
+		$$ = new CompStatement(nullptr);
 	}
 	| '{' statement_list '}' {
-		$$ = $2;
+		$$ = new CompStatement($2);
 	}
 	| '{' declaration_list '}' {
-		$$ = $2;
+		$$ = new CompStatement($2);
 	}
 	| '{' declaration_list statement_list '}'  {
-		$$ = new Multiline($2, $3);
+		$$ = new CompStatement(new Multiline($2, $3));
 	}
 	;
 

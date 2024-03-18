@@ -24,6 +24,8 @@
 #include "ast_multiline.hpp"
 #include "./ast/declarations/ast_declarator_with_parameters.hpp"
 #include "ast_param_declaration.hpp"
+#include "ast_compound_statement.hpp"
+#include "ast_nested_statement.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

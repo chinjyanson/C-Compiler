@@ -14,7 +14,7 @@ void Node::Print(std::ostream &stream) const
 }
 
 std::string Node::ReturnID() const{
-    return "you should not be here";
+    return "you should not be here, this is just a node";
 }
 
 void NodeList::PushBack(Node *item)
@@ -54,7 +54,7 @@ std::vector<std::string> NodeList::returnIDs() const{
         {
             continue;
         }
-        id_list.push_back(node->ReturnID());
+        id_list.push_back(node->ReturnID()); // dynamic cast here?
     }
     return id_list;
 }
