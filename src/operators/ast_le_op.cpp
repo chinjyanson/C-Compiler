@@ -1,20 +1,20 @@
-#include "./ast/operators/ast_sub_op.hpp"
+#include "ast/operators/ast_le_op.hpp"
 
-void SubOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
+void LeOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
     int left_reg = context.getFreeRegister();
     int right_reg = context.getFreeRegister();
 
     left_->EmitRISC(stream, context, left_reg);
     right_->EmitRISC(stream, context, right_reg);
-    stream << "sub x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
+    stream << "sle x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
 
     context.freeRegister(left_reg);
     context.freeRegister(right_reg);
 }
 
-void SubOp::Print(std::ostream &stream) const {
+void LeOp::Print(std::ostream &stream) const {
     left_->Print(stream);
-    stream << " - ";
+    stream << " <= ";
     right_->Print(stream);
 }

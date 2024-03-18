@@ -73,6 +73,7 @@ public:
     void declareVariable(std::string variable_name, std::string variable_type){
         variables[variable_name] = variable_type;
     }
+    
     int allocateVariable(std::string variable_name, std::string variable_type){
         if (variable_type == "int"){
             mem_offset -= 4;
@@ -118,8 +119,6 @@ public:
         }
         return it->second;
     }
-
-
 };
 
 #endif
