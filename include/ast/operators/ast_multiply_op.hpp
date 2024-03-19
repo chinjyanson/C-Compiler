@@ -11,10 +11,7 @@ private:
 
 public:
     MultiplyOp(Node *left, Node *right) : left_(left), right_(right) {}
-    virtual ~MultiplyOp() {
-        delete left_;
-        delete right_;
-    }
+    virtual ~MultiplyOp() {}
     virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     virtual void Print(std::ostream &stream) const override;
 };

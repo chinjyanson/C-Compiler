@@ -10,10 +10,7 @@ class BitwiseOr : public Node
         Node *right_;
     public:
         BitwiseOr(Node *left, Node *right) : left_(left), right_(right) {}
-        virtual ~BitwiseOr() {
-            delete left_;
-            delete right_;
-        }
+        virtual ~BitwiseOr() {}
         virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
         virtual void Print(std::ostream &stream) const override;
 };

@@ -10,10 +10,7 @@ private:
     Node *right_;
 public:
     GtOp(Node *left, Node *right) : left_(left), right_(right) {}
-    virtual ~GtOp() {
-        delete left_;
-        delete right_;
-    }
+    virtual ~GtOp() {}
     virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     virtual void Print(std::ostream &stream) const override;
 };

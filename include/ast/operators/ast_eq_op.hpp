@@ -10,12 +10,9 @@ class EqOp: public Node
         Node *right_;
     public:
         EqOp(Node *left, Node *right) : left_(left), right_(right) {}
-        virtual ~EqOp() {
-            delete left_;
-            delete right_;
-        }
+        virtual ~EqOp() {}
         virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
         virtual void Print(std::ostream &stream) const override;
 };
 
-#endif 
+#endif

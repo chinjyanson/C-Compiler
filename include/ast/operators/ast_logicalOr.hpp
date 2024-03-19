@@ -10,10 +10,7 @@ class LogicOr : public Node
         Node *right_;
     public:
         LogicOr(Node *left, Node *right) : left_(left), right_(right) {}
-        virtual ~LogicOr() {
-            delete left_;
-            delete right_;
-        }
+        virtual ~LogicOr() {}
         virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
         virtual void Print(std::ostream &stream) const override;
 };

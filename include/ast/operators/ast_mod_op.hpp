@@ -5,17 +5,14 @@
 
 class ModOp : public Node
 {
-private: 
+private:
     Node *left_;
     Node *right_;
 public:
     ModOp(Node *left, Node *right) : left_(left), right_(right) {}
-    virtual ~ModOp() {
-        delete left_;
-        delete right_;
-    }
+    virtual ~ModOp() {}
     virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     virtual void Print(std::ostream &stream) const override;
 };
 
-#endif 
+#endif
