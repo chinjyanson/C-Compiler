@@ -7,7 +7,10 @@ void GeOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
     left_->EmitRISC(stream, context, left_reg);
     right_->EmitRISC(stream, context, right_reg);
-    stream << "sge x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
+    stream << "slt x" << destReg << ", x" << right_reg << ", x"<< left_reg << std::endl;
+    stream << "sub x" << left_reg << ", x" << right_reg << ", x"<< left_reg << std::endl;
+    stream << "seqz x" << left_reg << ", x" << right_reg << std::endl;
+    stream << "or x" << destReg << ", x" << left_reg << ", x"<< destReg << std::endl;
 
     context.freeRegister(left_reg);
     context.freeRegister(right_reg);

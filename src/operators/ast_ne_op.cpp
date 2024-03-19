@@ -7,7 +7,8 @@ void NeOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
     left_->EmitRISC(stream, context, left_reg);
     right_->EmitRISC(stream, context, right_reg);
-    stream << "sne x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
+    stream << "sub x" << destReg << ", x" << left_reg << ", x"<< right_reg << std::endl;
+    stream << "snez x" << destReg << ", x" << destReg << std::endl;
 
     context.freeRegister(left_reg);
     context.freeRegister(right_reg);

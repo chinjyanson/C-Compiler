@@ -111,7 +111,7 @@ unary_operator
 	| '*'
 	| '+'
 	| '-'
-	| '~' 
+	| '~'
 	| '!'
 	;
 
@@ -135,14 +135,14 @@ additive_expression
 
 shift_expression
 	: additive_expression { $$ = $1; }
-	| shift_expression LEFT_OP additive_expression
-	| shift_expression RIGHT_OP additive_expression
+	| shift_expression LEFT_OP additive_expression  {$$ = new LsOp($1, $3);}
+	| shift_expression RIGHT_OP additive_expression  {$$ = new RsOp($1, $3);}
 	;
 
 relational_expression
 	: shift_expression { $$ = $1; }
-	| relational_expression '<' shift_expression
-	| relational_expression '>' shift_expression
+	| relational_expression '<' shift_expression {$$ = new LtOp($1, $3);}
+	| relational_expression '>' shift_expression {$$ = new GtOp($1, $3);}
 	| relational_expression LE_OP shift_expression {$$ = new LeOp($1, $3);}
 	| relational_expression GE_OP shift_expression {$$ = new GeOp($1, $3);}
 	;
@@ -170,12 +170,12 @@ inclusive_or_expression
 
 logical_and_expression
 	: inclusive_or_expression { $$ = $1; }
-	| logical_and_expression AND_OP inclusive_or_expression  
+	| logical_and_expression AND_OP inclusive_or_expression
 	;
 
 logical_or_expression
 	: logical_and_expression { $$ = $1; }
-	| logical_or_expression OR_OP logical_and_expression 
+	| logical_or_expression OR_OP logical_and_expression
 	;
 
 conditional_expression
@@ -192,8 +192,8 @@ assignment_expression
 	| unary_expression MOD_ASSIGN assignment_expression {$$ = new AssignOp($1, new ModOp($1, $3));}
 	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
 	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
-	| unary_expression LEFT_ASSIGN assignment_expression 
-	| unary_expression RIGHT_ASSIGN assignment_expression 
+	| unary_expression LEFT_ASSIGN assignment_expression
+	| unary_expression RIGHT_ASSIGN assignment_expression
 	| unary_expression AND_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseAnd($1, $3)); }
 	| unary_expression XOR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseXor($1, $3)); }
 	| unary_expression OR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseOr($1, $3)); }
@@ -203,7 +203,7 @@ assignment_operator
 	: '=' // i was originally doing it here, but it complained at me saying it wanted to be a string pointer
 	| MUL_ASSIGN  // so i just decided to circumvent it entirely.
 	| DIV_ASSIGN
-	| MOD_ASSIGN 
+	| MOD_ASSIGN
 	| ADD_ASSIGN
 	| SUB_ASSIGN
 	| LEFT_ASSIGN
@@ -255,7 +255,7 @@ storage_class_specifier
 type_specifier
 	: VOID
 	| CHAR
-	| SHORT 
+	| SHORT
 	| INT { $$ = new TypeSpecifier("int");}
 	| LONG { $$ = new TypeSpecifier("long");}
 	| FLOAT { $$ = new TypeSpecifier("float");}
@@ -288,7 +288,7 @@ specifier_qualifier_list
 	;
 
 struct_declarator_list
-	: struct_declarator 
+	: struct_declarator
 	| struct_declarator_list ',' struct_declarator
 	;
 
@@ -325,7 +325,7 @@ direct_declarator
 		delete $1;
 	}
 	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']' 
+	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')' //im guessing this is for function calls with params, or no, check
