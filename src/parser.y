@@ -253,13 +253,13 @@ storage_class_specifier
 	;
 
 type_specifier
-	: VOID
+	: VOID { $$ = new TypeSpecifier("void");}
 	| CHAR
 	| SHORT
 	| INT { $$ = new TypeSpecifier("int");}
 	| LONG { $$ = new TypeSpecifier("long");}
 	| FLOAT { $$ = new TypeSpecifier("float");}
-	| DOUBLE{ $$ = new TypeSpecifier("double");}
+	| DOUBLE { $$ = new TypeSpecifier("double");}
 	| SIGNED
 	| UNSIGNED
   | struct_specifier

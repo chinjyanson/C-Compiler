@@ -13,7 +13,8 @@ class Context
 public:
     /* TODO decide what goes inside here */
     bool is_function = false;
-    int n_branches =0 ;
+    int n_branches = 0 ;
+    int n_labels = 0;
 
     // Free memory stack offset
     int mem_offset = -16;
@@ -24,9 +25,9 @@ public:
     std::vector<std::map<std::string, std::string>> variables; // Scope: Variable name - Type
 
     //Function table:
-    std::map<std::string, std::string> functions; // Name   - Type
-    std::map<std::string, std::map<std::string, std::string>> function_params; // Name - Param list (Name - Type)
-    std::map<std::string, std::map<std::string, std::string>> function_vars; // Name - Local variable list (Name - Type)
+    std::vector<std::map<std::string, std::string>> functions; // Scope: Function name - Type
+    std::vector<std::map<std::string, std::string>> function_labels; // Scope: Function name - label name
+    std::vector<std::map<std::string, std::map<std::string, std::string>>> function_params; // Scope: Name - Param list (Name - Type)
 
     // Available registers
     int registers[32] =
@@ -101,7 +102,7 @@ public:
         return mem_offset;
     }
     void addFunction(std::string func_name, std::string func_type){
-        functions[func_name] = func_type;
+        functions[functions.size()-1][func_name] = func_type;
         // might add the params here idk yet
     }
 
