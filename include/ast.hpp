@@ -27,6 +27,8 @@
 #include "ast/operators/ast_bitwiseAnd.hpp"
 #include "ast/operators/ast_bitwiseOr.hpp"
 #include "ast/operators/ast_bitwiseXor.hpp"
+#include "ast/operators/ast_logicalOr.hpp"
+#include "ast/operators/ast_logicalAnd.hpp"
 #include "ast/operators/ast_le_op.hpp"
 #include "ast/operators/ast_ge_op.hpp"
 #include "ast/operators/ast_lt_op.hpp"

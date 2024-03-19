@@ -12,7 +12,8 @@ class Context
 {
 public:
     /* TODO decide what goes inside here */
-    bool is_function;
+    bool is_function = false;
+    int n_branches =0 ;
 
     // Free memory stack offset
     int mem_offset = -16;
@@ -71,11 +72,17 @@ public:
     return -1;
     }
 
+    //
+    std::string createBranch(){
+        n_branches++;
+        return "L"+std::to_string(n_branches);
+    }
+
     //Setters
     void declareVariable(std::string variable_name, std::string variable_type){
         variables[variables.size()-1][variable_name] = variable_type;
     }
-    
+
     int allocateVariable(std::string variable_name, std::string variable_type){
         if (variable_type == "int"){
             mem_offset -= 4;
@@ -141,24 +148,3 @@ public:
 };
 
 #endif
-
-
-// when entering a new scope:
-// create a new scope in the list
-// check if youre calling a compound list due to a function or not
-
-// store the size of the current variable list probably in the node cpp
-// store the value of the current mem_offset
-// store current state of is_function
-
-// if yes: (function)
-// push the current stack onto a seperate list so it's empty
-// increment the stack pointer by mem_offset so it can start afresh
-
-// if no: (just {} for ifs and stuff)
-// dont move the current vars away
-
-// at the end of the scope:
-// pop all the variables after the index[size] in the variable list
-// revert mem_offset
-// revert is_function
