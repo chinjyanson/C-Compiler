@@ -2,6 +2,6 @@ int g()
 {
     int x;
     x = 10;
-    x += 5;
+    x = (x==5?2:15);
     return x;
 }

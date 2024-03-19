@@ -40,6 +40,8 @@
 #include "ast/operators/ast_ne_op.hpp"
 #include "ast_compound_statement.hpp"
 #include "ast_nested_statement.hpp"
+#include "ast_if_statement.hpp"
+#include "ast_while.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

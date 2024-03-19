@@ -5,11 +5,11 @@ void LogicAnd::EmitRISC(std::ostream &stream, Context &context, int destReg) con
     int left_reg = context.getFreeRegister();
     int right_reg = context.getFreeRegister();
 
-    left_->EmitRISC(stream, context, left_reg);
-    right_->EmitRISC(stream, context, right_reg);
-
     std::string branch0 = context.createBranch();
     std::string branchOut = context.createBranch();
+
+    left_->EmitRISC(stream, context, left_reg);
+    right_->EmitRISC(stream, context, right_reg);
 
     stream << "li x" << destReg << ", 1" << std::endl;
     stream << "beq x" << left_reg << ", " << "zero, ." << branch0 << std::endl;

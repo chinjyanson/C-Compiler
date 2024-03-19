@@ -180,7 +180,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression { $$ = $1; }
-	| logical_or_expression '?' expression ':' conditional_expression
+	| logical_or_expression '?' expression ':' conditional_expression // {$$ = new IfStatement($1, $3, $5);}
 	;
 
 assignment_expression
@@ -436,16 +436,16 @@ expression_statement
 	;
 
 selection_statement
-	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
+	: IF '(' expression ')' statement {$$ = new IfStatement($3, $5, nullptr);}
+	| IF '(' expression ')' statement ELSE statement {$$ = new IfStatement($3, $5, $7);}
 	| SWITCH '(' expression ')' statement
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement
-	| DO statement WHILE '(' expression ')' ';'
-	| FOR '(' expression_statement expression_statement ')' statement
-	| FOR '(' expression_statement expression_statement expression ')' statement
+	: WHILE '(' expression ')' statement {$$ = new WhileLoop($3, $5, false);}
+	| DO statement WHILE '(' expression ')' ';' {$$ = new WhileLoop($5, $2, true);}
+	| FOR '(' expression_statement expression_statement ')' statement // condition change probably happens INSIDE loop
+	| FOR '(' expression_statement expression_statement expression ')' statement // condition change in declaration, check
 	;
 
 jump_statement

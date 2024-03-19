@@ -4,13 +4,12 @@ void LogicOr::EmitRISC(std::ostream &stream, Context &context, int destReg) cons
 {
     int left_reg = context.getFreeRegister();
     int right_reg = context.getFreeRegister();
-
-    left_->EmitRISC(stream, context, left_reg);
-    right_->EmitRISC(stream, context, right_reg);
-
     std::string branch1 = context.createBranch();
     std::string branch0 = context.createBranch();
     std::string branchOut = context.createBranch();
+
+    left_->EmitRISC(stream, context, left_reg);
+    right_->EmitRISC(stream, context, right_reg);
 
     stream << "bne x" << left_reg << ", " << "zero, ." << branch1 << std::endl;
     stream << "beq x" << right_reg << ", " << "zero, ." << branch0 << std::endl;
