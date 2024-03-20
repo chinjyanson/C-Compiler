@@ -8,4 +8,6 @@ void Multiline::EmitRISC(std::ostream &stream, Context &context, int destReg) co
 
 void Multiline::Print(std::ostream &stream) const
 {
+    declaration_list_->Print(stream);
+    statement_list_->Print(stream);
 }

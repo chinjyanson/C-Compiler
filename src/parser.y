@@ -444,7 +444,7 @@ selection_statement
 iteration_statement
 	: WHILE '(' expression ')' statement {$$ = new WhileLoop($3, $5, false);}
 	| DO statement WHILE '(' expression ')' ';' {$$ = new WhileLoop($5, $2, true);}
-	| FOR '(' expression_statement expression_statement ')' statement // condition change probably happens INSIDE loop
+	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForLoop($3, $4, nullptr, $6); }
 	| FOR '(' expression_statement expression_statement expression ')' statement // condition change in declaration, check
 	;
 
