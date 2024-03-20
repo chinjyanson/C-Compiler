@@ -10,8 +10,9 @@ void Argument::EmitRISC(std::ostream &stream, Context &context, int destReg) con
     context.freeRegister(arg_reg);
 }
 
-void Argument::Print(std::ostream &stream) const
-{};
+void Argument::Print(std::ostream &stream) const{
+    arg_->Print(stream);
+};
 
 int Argument::getSize() const{
     return arg_->getSize();

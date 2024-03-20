@@ -28,7 +28,13 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
 
 }
 
-void VariableInit::Print(std::ostream &stream) const {}
+void VariableInit::Print(std::ostream &stream) const {
+    declarator_->Print(stream);
+    if(initializer_!=nullptr){
+        stream << " = ";
+        initializer_->Print(stream);
+    }
+}
 
 std::string VariableInit::ReturnID() const {
     return declarator_->ReturnID();

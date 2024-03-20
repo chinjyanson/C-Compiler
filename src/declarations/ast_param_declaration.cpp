@@ -34,4 +34,8 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context, int destReg) co
     //context.freeRegister(param_reg);
 }
 
-void Parameter::Print(std::ostream &stream) const {}
+void Parameter::Print(std::ostream &stream) const {
+    dec_spec_->Print(stream);
+    stream << " ";
+    declarator_->Print(stream);
+}
