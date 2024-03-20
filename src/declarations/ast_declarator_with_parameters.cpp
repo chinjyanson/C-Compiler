@@ -18,7 +18,7 @@ void DeclaratorWithParameters::Print(std::ostream &stream) const
     stream << ")";
 }
 
-std::string DeclaratorWithParameters::ReturnID()
+std::string DeclaratorWithParameters::ReturnID() const
 {
     return declarator_->ReturnID();
 }

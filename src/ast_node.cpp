@@ -17,6 +17,10 @@ std::string Node::ReturnID() const{
     return "you should not be here, this is just a node";
 }
 
+int Node::getSize() const{
+    return -1;
+}
+
 void NodeList::PushBack(Node *item)
 {
     nodes_.push_back(item);
@@ -31,6 +35,16 @@ void NodeList::EmitRISC(std::ostream &stream, Context &context, int destReg) con
             continue;
         }
         node->EmitRISC(stream, context, destReg);
+    }
+}
+
+void NodeList::EmitBackwards(std::ostream &stream, Context &context, int destReg) const{
+    for (auto node = nodes_.rbegin(); node != nodes_.rend(); node++){
+        if (*node == nullptr)
+        {
+            continue;
+        }
+        (*node)->EmitRISC(stream, context, destReg);
     }
 }
 

@@ -10,6 +10,10 @@ void IntConstant::Print(std::ostream &stream) const
     stream << value_;
 }
 
+int IntConstant::getSize() const {
+    return 4;
+}
+
 void FloatConstant::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
     stream << "fli x" << destReg << ", " << value_ << std::endl;
@@ -18,4 +22,8 @@ void FloatConstant::EmitRISC(std::ostream &stream, Context &context, int destReg
 void FloatConstant::Print(std::ostream &stream) const
 {
     stream << value_;
+}
+
+int FloatConstant::getSize() const {
+    return 8;
 }

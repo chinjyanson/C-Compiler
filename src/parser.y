@@ -27,7 +27,7 @@
 %token STRUCT UNION ENUM ELLIPSIS
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%type <node> translation_unit external_declaration function_definition primary_expression postfix_expression argument_expression_list
+%type <node> translation_unit external_declaration function_definition primary_expression postfix_expression
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
@@ -36,7 +36,7 @@
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list init_declarator_list declaration_list parameter_list
+%type <nodes> statement_list init_declarator_list declaration_list parameter_list argument_expression_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -78,23 +78,23 @@ primary_expression
 	}
     | FLOAT_CONSTANT
 	| STRING_LITERAL
-	| '(' expression ')'
+	| '(' expression ')' // need to do this
 	;
 
 postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '[' expression ']'
-	| postfix_expression '(' ')'
-	| postfix_expression '(' argument_expression_list ')'
+	| postfix_expression '(' ')' {$$ = new FunctionCall($1, nullptr);}
+	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
-	| postfix_expression INC_OP
-	| postfix_expression DEC_OP
+	| postfix_expression INC_OP // OMG THE ++ OPERATOR, I LOVE THIS FELLA
+	| postfix_expression DEC_OP // THE -- ONE TOO
 	;
 
 argument_expression_list
-	: assignment_expression
-	| argument_expression_list ',' assignment_expression
+	: assignment_expression  {$$ = new NodeList(new Argument($1));}
+	| argument_expression_list ',' assignment_expression  {$1->PushBack(new Argument($3)); $$ = $1;}
 	;
 
 unary_expression
@@ -328,7 +328,7 @@ direct_declarator
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
-	| direct_declarator '(' identifier_list ')' //im guessing this is for function calls with params, or no, check
+	| direct_declarator '(' identifier_list ')' // i take it back, no idea what this is for ngl
 	| direct_declarator '(' ')' {
 		$$ = new DirectDeclarator($1);
 	}
