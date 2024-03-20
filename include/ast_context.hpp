@@ -13,23 +13,19 @@ class Context
 public:
     /* TODO decide what goes inside here */
     bool is_function = false;
-    bool is_call = false;
     int n_branches = 0 ;
-    int n_labels = 0;
 
     // Free memory stack offset
     int mem_offset = -16;
-    int arg_offset = 0;
     // Variable stored table:
     std::vector<std::map<std::string, int>> variable_allocs; // Scope: Variable name - stack offset
 
     //Global variable table:
     std::vector<std::map<std::string, std::string>> variables; // Scope: Variable name - Type
 
-    //Function table: probably wont need any of these ngl
-    std::vector<std::map<std::string, std::string>> functions; // Scope: Function name - Type
-    std::vector<std::map<std::string, std::string>> function_labels; // Scope: Function name - label name
-    std::vector<std::map<std::string, std::map<std::string, std::string>>> function_params; // Scope: Name - Param list (Name - Type)
+    //Function table:
+    std::map<std::string, std::string> functions; // Function name - Type
+    std::map<std::string, std::map<std::string, std::string>> function_params; // Name - Param list (Name - Type)
 
     // Available registers
     int registers[32] =
@@ -75,6 +71,14 @@ public:
     return -1;
     }
 
+    void freeParamRegs(){
+        for (int i = 10; i < 17; i++){
+            if (registers[i] == 1 ){
+                registers[i] = 0;
+            }
+        }
+    }
+
     //
     std::string createBranch(){
         n_branches++;
@@ -87,25 +91,28 @@ public:
     }
 
     int allocateVariable(std::string variable_name, std::string variable_type){
-        if (variable_type == "int"){
-            mem_offset -= 4;
+        if (variable_type == "char"){
+            mem_offset -= 1;
         }
-        if (variable_type == "double"){
+        else if (variable_type == "double"){
             mem_offset -= 8;
         }
-        if (variable_type == "float"){
-            mem_offset -= 4;
-        }
-        if (variable_type == "long"){
+        else if (variable_type == "long"){
             mem_offset -= 8;
+        }
+        else{
+            mem_offset -= 4;
         }
         variable_allocs[variable_allocs.size()-1][variable_name] = mem_offset;
         declareVariable(variable_name, variable_type);
         return mem_offset;
     }
     void addFunction(std::string func_name, std::string func_type){
-        functions[functions.size()-1][func_name] = func_type;
+        functions[func_name] = func_type;
         // might add the params here idk yet
+    }
+    void addParams(std::string func_name, std::map<std::string, std::string> param_list){
+        function_params[func_name] = param_list;
     }
 
     //Getters
@@ -134,6 +141,10 @@ public:
             }
             return it->second;
         }
+    }
+    std::map<std::string, std::string> returnParamList(std::string func_name) const {
+        auto it = function_params.find(func_name);
+        return it->second;
     }
 
     std::string getVariableType(std::string variable_name) const {

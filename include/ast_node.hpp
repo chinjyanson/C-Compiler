@@ -17,6 +17,7 @@ public:
     virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
     virtual std::string ReturnID() const;
+    virtual std::string returnType() const;
     virtual int getSize() const;
 };
 
@@ -42,6 +43,7 @@ public:
     virtual void EmitBackwards(std::ostream &stream, Context &context, int destReg) const;
     virtual void Print(std::ostream &stream) const override;
     virtual std::vector<std::string> returnIDs() const;
+    virtual std::vector<std::string> returnTypes() const;
 
 };
 

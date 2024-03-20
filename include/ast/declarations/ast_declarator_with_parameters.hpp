@@ -3,13 +3,17 @@
 
 #include "ast_node.hpp"
 
+#include <vector>
+#include <string>
+#include <map>
+
 class DeclaratorWithParameters : public Node
 {
 private:
     Node *declarator_;
-    Node *parameter_list_;
+    NodeList *parameter_list_;
 public:
-    DeclaratorWithParameters(Node *declarator, Node *parameter_list) : declarator_(declarator), parameter_list_(parameter_list){};
+    DeclaratorWithParameters(Node *declarator, Node *parameter_list) : declarator_(declarator), parameter_list_(dynamic_cast<NodeList*>(parameter_list)){};
     ~DeclaratorWithParameters()
     {
         delete declarator_;

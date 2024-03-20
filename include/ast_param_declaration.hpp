@@ -5,6 +5,8 @@
 #include "ast_type_specifier.hpp"
 #include "ast_identifier.hpp"
 
+#include <string>
+
 class Parameter : public Node
 {
 public:
@@ -12,6 +14,8 @@ public:
     ~Parameter(){}
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
+    std::string ReturnID() const override;
+    std::string returnType() const override;
 
 private:
     TypeSpecifier *dec_spec_;

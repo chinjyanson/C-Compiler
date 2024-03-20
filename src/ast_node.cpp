@@ -16,6 +16,9 @@ void Node::Print(std::ostream &stream) const
 std::string Node::ReturnID() const{
     return "you should not be here, this is just a node";
 }
+std::string Node::returnType() const{
+    return "you should not be here, this is just a node";
+}
 
 int Node::getSize() const{
     return -1;
@@ -71,4 +74,17 @@ std::vector<std::string> NodeList::returnIDs() const{
         id_list.push_back(node->ReturnID()); // dynamic cast here?
     }
     return id_list;
+}
+
+std::vector<std::string> NodeList::returnTypes() const{
+    std::vector<std::string> type_list;
+    for (auto node : nodes_)
+    {
+        if (node == nullptr)
+        {
+            continue;
+        }
+        type_list.push_back(node->returnType());
+    }
+    return type_list;
 }
