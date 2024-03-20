@@ -42,6 +42,8 @@
 #include "ast_nested_statement.hpp"
 #include "ast_if_statement.hpp"
 #include "ast_while.hpp"
+#include "ast_argument.hpp"
+#include "ast_function_call.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

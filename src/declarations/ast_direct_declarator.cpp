@@ -14,7 +14,7 @@ void DirectDeclarator::Print(std::ostream &stream) const
     identifier_->Print(stream);
 }
 
-std::string DirectDeclarator::ReturnID()
+std::string DirectDeclarator::ReturnID() const
 {
     return identifier_->ReturnID();
 }

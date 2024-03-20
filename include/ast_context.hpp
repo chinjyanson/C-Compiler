@@ -13,18 +13,20 @@ class Context
 public:
     /* TODO decide what goes inside here */
     bool is_function = false;
+    bool is_call = false;
     int n_branches = 0 ;
     int n_labels = 0;
 
     // Free memory stack offset
     int mem_offset = -16;
+    int arg_offset = 0;
     // Variable stored table:
     std::vector<std::map<std::string, int>> variable_allocs; // Scope: Variable name - stack offset
 
     //Global variable table:
     std::vector<std::map<std::string, std::string>> variables; // Scope: Variable name - Type
 
-    //Function table:
+    //Function table: probably wont need any of these ngl
     std::vector<std::map<std::string, std::string>> functions; // Scope: Function name - Type
     std::vector<std::map<std::string, std::string>> function_labels; // Scope: Function name - label name
     std::vector<std::map<std::string, std::map<std::string, std::string>>> function_params; // Scope: Name - Param list (Name - Type)

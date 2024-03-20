@@ -5,6 +5,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
     // Store current state of context
     bool was_function = context.is_function;
     int old_mem_offset = context.mem_offset;
+    int old_arg_offset = context.arg_offset;
     std::vector<std::map<std::string, std::string>> old_variables;
     for (auto& scope : context.variables) {
         old_variables.push_back(std::move(scope));
@@ -23,14 +24,15 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
     context.variable_allocs.push_back(std::map<std::string, int>());
     stream << "addi s0, s0, " << old_mem_offset+16 << std::endl;
     context.mem_offset = -16;
+    context.arg_offset = 0;
 
     // Emit assembler directives.
     // TODO: these are just examples ones, make sure you understand
     // the concept of directives and correct them.
-    stream << ".text" << std::endl;
-    // stream << ".globl f" << std::endl; // so this just makes the function with name f global MOVED TO DECs
 
-    declarator_->EmitRISC(stream, context, destReg);
+    stream << ".text" << std::endl;
+    // label?
+    declarator_->EmitRISC(stream, context, destReg); // this does the .globl name and name: and start param setup
     if (compound_statement_ != nullptr)
     {
         compound_statement_->EmitRISC(stream, context, destReg);
@@ -40,6 +42,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
     context.is_function = was_function;
     stream << "addi s0, s0, " << -(old_mem_offset+16) << std::endl;
     context.mem_offset = old_mem_offset;
+    context.arg_offset = old_arg_offset;
     context.variables.pop_back();
     context.variable_allocs.pop_back();
 

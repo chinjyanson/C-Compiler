@@ -28,3 +28,22 @@ void VariableCall::UpdateVar(std::ostream &stream, Context &context, int destReg
 }
 
 void VariableCall::Print(std::ostream &stream) const {}
+
+std::string VariableCall::ReturnID() const {
+    return identifier_;
+}
+
+int VariableCall::getSize() const{
+    if(identifier_=="char"){
+        return 1;
+    }
+    else if(identifier_=="float"){
+        return 8;
+    }
+    else if(identifier_=="double"){
+        return 4;
+    }
+    else{
+        return 4;
+    }
+}

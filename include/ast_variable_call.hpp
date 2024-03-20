@@ -13,6 +13,8 @@ public:
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     virtual void UpdateVar(std::ostream &stream, Context &context, int destReg) const;
+    std::string ReturnID() const override;
+    int getSize() const override;
 private:
     std::string identifier_;
 };
