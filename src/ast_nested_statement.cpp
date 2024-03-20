@@ -8,4 +8,7 @@ void NestStatement::EmitRISC(std::ostream &stream, Context &context, int destReg
 }
 
 void NestStatement::Print(std::ostream &stream) const {
+    stream << "{";
+    branch_->Print(stream);
+    stream << "}";
 }

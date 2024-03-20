@@ -44,6 +44,7 @@
 #include "ast_while.hpp"
 #include "ast_argument.hpp"
 #include "ast_function_call.hpp"
+#include "ast_for.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

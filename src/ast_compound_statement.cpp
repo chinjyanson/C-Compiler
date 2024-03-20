@@ -19,4 +19,7 @@ void CompStatement::EmitRISC(std::ostream &stream, Context &context, int destReg
 }
 
 void CompStatement::Print(std::ostream &stream) const {
+    stream << "{";
+    branch_->Print(stream);
+    stream << "}";
 }

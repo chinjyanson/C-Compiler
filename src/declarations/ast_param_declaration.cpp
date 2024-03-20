@@ -27,7 +27,11 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context, int destReg) co
 
 }
 
-void Parameter::Print(std::ostream &stream) const {}
+void Parameter::Print(std::ostream &stream) const {
+    dec_spec_->Print(stream);
+    stream << " ";
+    declarator_->Print(stream);
+}
 
 std::string Parameter::ReturnID() const{
     return declarator_->ReturnID();

@@ -27,7 +27,9 @@ void VariableCall::UpdateVar(std::ostream &stream, Context &context, int destReg
     }
 }
 
-void VariableCall::Print(std::ostream &stream) const {}
+void VariableCall::Print(std::ostream &stream) const {
+    stream << identifier_;
+}
 
 std::string VariableCall::ReturnID() const {
     return identifier_;

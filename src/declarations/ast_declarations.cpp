@@ -16,4 +16,8 @@ void Declarations::EmitRISC(std::ostream &stream, Context &context, int destReg)
 
 }
 
-void Declarations::Print(std::ostream &stream) const {}
+void Declarations::Print(std::ostream &stream) const {
+    dec_spec_->Print(stream);
+    stream << " ";
+    init_declarator_list_->Print(stream);
+}
