@@ -77,7 +77,7 @@ primary_expression
 		$$ = new IntConstant($1);
 	}
     | FLOAT_CONSTANT
-	| STRING_LITERAL
+	| STRING_LITERAL // {$$ = new StringConstant($1);}
 	| '(' expression ')' {$$ = $2;} // need to do this
 	;
 
@@ -192,8 +192,8 @@ assignment_expression
 	| unary_expression MOD_ASSIGN assignment_expression {$$ = new AssignOp($1, new ModOp($1, $3));}
 	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
 	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
-	| unary_expression LEFT_ASSIGN assignment_expression
-	| unary_expression RIGHT_ASSIGN assignment_expression
+	| unary_expression LEFT_ASSIGN assignment_expression { $$ = new AssignOp($1, new LsOp($1, $3)); }
+	| unary_expression RIGHT_ASSIGN assignment_expression { $$ = new AssignOp($1, new RsOp($1, $3)); }
 	| unary_expression AND_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseAnd($1, $3)); }
 	| unary_expression XOR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseXor($1, $3)); }
 	| unary_expression OR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseOr($1, $3)); }
