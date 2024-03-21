@@ -24,6 +24,17 @@ int Node::getSize() const{
     return -1;
 }
 
+void Node::mapParams(Context &context) const{
+
+}
+void Node::mapVars(Context &context) const{
+
+}
+void Node::isFunction(Context &context) const{
+
+}
+
+
 void NodeList::PushBack(Node *item)
 {
     nodes_.push_back(item);
@@ -87,4 +98,37 @@ std::vector<std::string> NodeList::returnTypes() const{
         type_list.push_back(node->returnType());
     }
     return type_list;
+}
+
+void NodeList::mapParams(Context &context) const{
+    for (auto node : nodes_)
+    {
+        if (node == nullptr)
+        {
+            continue;
+        }
+        node->mapParams(context);
+    }
+}
+
+void NodeList::mapVars(Context &context) const{
+    for (auto node : nodes_)
+    {
+        if (node == nullptr)
+        {
+            continue;
+        }
+        node->mapVars(context);
+    }
+}
+
+void NodeList::isFunction(Context &context) const{
+    for (auto node : nodes_)
+    {
+        if (node == nullptr)
+        {
+            continue;
+        }
+        node->isFunction(context);
+    }
 }

@@ -21,3 +21,11 @@ void Declarations::Print(std::ostream &stream) const {
     stream << " ";
     init_declarator_list_->Print(stream);
 }
+
+void Declarations::mapVars(Context &context) const{
+    std::vector<std::string> name_list = init_declarator_list_->returnIDs();
+    std::string type_ = dec_spec_->returnType();
+    for(int i = 0; i<name_list.size(); i++){
+        context.addTempVar(name_list[i], type_);
+    }
+}

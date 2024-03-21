@@ -17,6 +17,7 @@ public:
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     int getSize() const override;
+    void isFunction(Context &context) const override;
 private:
     Node *name_;
     NodeList *args_;

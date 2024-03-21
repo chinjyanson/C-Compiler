@@ -27,3 +27,14 @@ void::ForLoop::Print(std::ostream &stream) const
     stream << ") ";
     statement_->Print(stream);
 }
+
+void ForLoop::isFunction(Context &context) const{
+    condition_->isFunction(context);
+    init_->isFunction(context);
+    statement_->isFunction(context);
+};
+void ForLoop::mapVars(Context &context) const{
+    condition_->mapVars(context);
+    statement_->isFunction(context);
+    init_->mapVars(context);
+}

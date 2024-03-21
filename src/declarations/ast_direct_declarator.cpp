@@ -2,11 +2,11 @@
 
 void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    stream << ".globl ";
+    /* stream << ".globl ";
     identifier_->EmitRISC(stream, context, destReg);
     stream << std::endl;
     identifier_->EmitRISC(stream, context, destReg);
-    stream << ":" << std::endl;
+    stream << ":" << std::endl; */
 }
 
 void DirectDeclarator::Print(std::ostream &stream) const

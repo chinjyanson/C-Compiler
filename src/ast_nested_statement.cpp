@@ -12,3 +12,11 @@ void NestStatement::Print(std::ostream &stream) const {
     branch_->Print(stream);
     stream << "}";
 }
+
+void NestStatement::mapVars(Context &context) const{
+    branch_->mapVars(context);
+}
+
+void NestStatement::isFunction(Context &context) const{
+    branch_->isFunction(context);
+}

@@ -19,6 +19,9 @@ public:
     virtual std::string ReturnID() const;
     virtual std::string returnType() const;
     virtual int getSize() const;
+    virtual void mapParams(Context &context) const;
+    virtual void mapVars(Context &context) const;
+    virtual void isFunction(Context &context) const;
 };
 
 // Represents a list of nodes.
@@ -44,6 +47,9 @@ public:
     virtual void Print(std::ostream &stream) const override;
     virtual std::vector<std::string> returnIDs() const;
     virtual std::vector<std::string> returnTypes() const;
+    virtual void mapVars(Context &context) const override;
+    virtual void mapParams(Context &context) const override;
+    virtual void isFunction(Context &context) const override;
 
 };
 

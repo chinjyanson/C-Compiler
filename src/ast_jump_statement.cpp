@@ -6,7 +6,7 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context, int destR
     {
         expression_->EmitRISC(stream, context, destReg);
     }
-    stream << "ret" << std::endl;
+    stream << "j ." << context.getLabel() << std::endl;
 }
 
 void ReturnStatement::Print(std::ostream &stream) const
@@ -18,4 +18,8 @@ void ReturnStatement::Print(std::ostream &stream) const
         expression_->Print(stream);
     }
     stream << ";" << std::endl;
+}
+
+void ReturnStatement::isFunction(Context &context) const{
+    expression_->isFunction(context);
 }

@@ -23,3 +23,10 @@ void CompStatement::Print(std::ostream &stream) const {
     branch_->Print(stream);
     stream << "}";
 }
+
+void CompStatement::mapVars(Context &context) const{
+    branch_->mapVars(context);
+}
+void CompStatement::isFunction(Context &context) const{
+    branch_->isFunction(context);
+}

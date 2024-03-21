@@ -19,3 +19,7 @@ void BitwiseOr::Print(std::ostream &stream) const
     stream << " | ";
     right_->Print(stream);
 }
+void BitwiseOr::isFunction(Context &context) const{
+    left_->isFunction(context);
+    right_->isFunction(context);
+}

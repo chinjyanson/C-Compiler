@@ -13,6 +13,7 @@ class BitwiseOr : public Node
         virtual ~BitwiseOr() {}
         virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
         virtual void Print(std::ostream &stream) const override;
+        void isFunction(Context &context) const override;
 };
 
 #endif

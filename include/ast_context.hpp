@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <cmath>
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
@@ -12,8 +13,10 @@ class Context
 {
 public:
     /* TODO decide what goes inside here */
-    bool is_function = false;
-    int n_branches = 0 ;
+    int is_function = 0;
+    int n_branches = 0;
+    int n_labels = 0;
+    std::vector<std::string> labels; // for function returns before we exit them
 
     // Free memory stack offset
     int mem_offset = -16;
@@ -25,7 +28,10 @@ public:
 
     //Function table:
     std::map<std::string, std::string> functions; // Function name - Type
+    std::map<std::string, int> function_size; // Name - Memory needed
     std::map<std::string, std::map<std::string, std::string>> function_params; // Name - Param list (Name - Type)
+    std::map<std::string, std::map<std::string, std::string>> function_vars; // Name - Local var list (Name - Type)
+    std::map<std::string, std::string> temp_vars;
 
     // Available registers
     int registers[32] =
@@ -84,25 +90,72 @@ public:
         n_branches++;
         return "L"+std::to_string(n_branches);
     }
+    std::string createLabel() {
+        n_labels += 1;
+        std::string label_name = "end"+std::to_string(n_labels);
+        labels.push_back(label_name);
+        return label_name;
+    }
+
+    std::string getLabel(){
+       return labels.back();
+    }
+
+
+    int checkSize(std::string type_){
+        if (type_ == "char"){
+            return 1;
+        }
+        else if (type_ == "double"){
+            return 8;
+        }
+        else if (type_ == "long"){
+            return 8;
+        }
+        else{
+            return 4;
+        }
+    }
+    int checkFunctionSize(const std::string& func_name) {
+        int stacksize = 0;
+        auto it_params = function_params.find(func_name);
+        if (it_params != function_params.end()) {
+            const auto& params = it_params->second;
+            for (const auto& param : params) {
+                stacksize += checkSize(param.second);
+            }
+        }
+        // Check function variables
+        auto it_vars = function_vars.find(func_name);
+        if (it_vars != function_vars.end()) {
+            const auto& vars = it_vars->second;
+            for (const auto& var : vars) {
+                stacksize += checkSize(var.second);
+            }
+        }
+        return stacksize;
+    }
+    int roundStackSize(int num){
+        int multiplier = ceil((double)num/16);
+        return (multiplier*16) + 16;
+    }
+    void isFunctionCall(){
+        is_function = 1;
+    }
 
     //Setters
     void declareVariable(std::string variable_name, std::string variable_type){
+        if(variables.size()==0){
+            variables.push_back(std::map<std::string, std::string>());
+        }
         variables[variables.size()-1][variable_name] = variable_type;
     }
 
     int allocateVariable(std::string variable_name, std::string variable_type){
-        if (variable_type == "char"){
-            mem_offset -= 1;
+        if(variable_allocs.size()==0){
+            variable_allocs.push_back(std::map<std::string, int>());
         }
-        else if (variable_type == "double"){
-            mem_offset -= 8;
-        }
-        else if (variable_type == "long"){
-            mem_offset -= 8;
-        }
-        else{
-            mem_offset -= 4;
-        }
+        mem_offset -= checkSize(variable_type);
         variable_allocs[variable_allocs.size()-1][variable_name] = mem_offset;
         declareVariable(variable_name, variable_type);
         return mem_offset;
@@ -113,6 +166,12 @@ public:
     }
     void addParams(std::string func_name, std::map<std::string, std::string> param_list){
         function_params[func_name] = param_list;
+    }
+    void addFunctionVars(std::string func_name){
+        function_vars[func_name] = temp_vars;
+    }
+    void setFunctionSize(std::string func_name, int f_size){
+        function_size[func_name] = f_size;
     }
 
     //Getters
@@ -142,11 +201,6 @@ public:
             return it->second;
         }
     }
-    std::map<std::string, std::string> returnParamList(std::string func_name) const {
-        auto it = function_params.find(func_name);
-        return it->second;
-    }
-
     std::string getVariableType(std::string variable_name) const {
         for(int i = variables.size()-1; i >= 0; i--){
             auto it = variables[i].find(variable_name);
@@ -159,6 +213,23 @@ public:
             return it->second;
         }
     }
+
+    std::map<std::string, std::string> returnParamList(std::string func_name) const {
+        auto it = function_params.find(func_name);
+        return it->second;
+    }
+
+    int getFunctionSize(std::string func_name){
+        auto it = function_size.find(func_name);
+        return it->second;
+    }
+    void addTempVar(std::string var_name, std::string var_type){
+        temp_vars[var_name] = var_type;
+    }
+    void clearTempVars(){
+        temp_vars.clear();
+    }
+
 };
 
 #endif
