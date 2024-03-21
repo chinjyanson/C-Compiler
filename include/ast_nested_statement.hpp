@@ -10,7 +10,9 @@ private:
 
 public:
     NestStatement(Node *branch) : branch_(branch) {}
-    ~NestStatement() {}
+    ~NestStatement() {
+        delete branch_;
+    }
 
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;

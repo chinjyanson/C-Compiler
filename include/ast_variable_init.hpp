@@ -11,7 +11,10 @@ class VariableInit : public Node
 {
 public:
     VariableInit(Node *declarator, Node *initializer) : declarator_(dynamic_cast<Identifier*>(declarator)), initializer_(initializer) {};
-    ~VariableInit(){};
+    ~VariableInit(){
+        delete declarator_;
+        delete initializer_;
+    };
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     std::string ReturnID() const override;

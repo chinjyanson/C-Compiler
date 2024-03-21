@@ -57,7 +57,13 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     context.variable_allocs.pop_back();
 }
 
-void FunctionCall::Print(std::ostream &stream) const {}
+void FunctionCall::Print(std::ostream &stream) const {
+    stream << name_->ReturnID() << "(";
+    if(args_!=nullptr){
+        args_->Print(stream);
+    }
+    stream << ")";
+}
 
  int FunctionCall::getSize() const{
     /* get f_type from context probably

@@ -8,7 +8,10 @@ class Declarations : public Node
 {
 public:
     Declarations(Node *dec_spec, Node *init_declarator_list) : dec_spec_(dynamic_cast<TypeSpecifier*>(dec_spec)), init_declarator_list_(dynamic_cast<NodeList*>(init_declarator_list)) {}
-    ~Declarations(){}
+    ~Declarations(){
+        delete dec_spec_;
+        delete init_declarator_list_;
+    }
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     //void mapVariables(Context &context){}
