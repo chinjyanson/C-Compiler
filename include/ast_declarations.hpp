@@ -11,7 +11,7 @@ public:
     ~Declarations(){}
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
-    //void mapVariables(Context &context){}
+    void mapVars(Context &context) const override;
 
 private:
     TypeSpecifier *dec_spec_;

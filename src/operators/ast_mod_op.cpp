@@ -18,3 +18,7 @@ void ModOp::Print(std::ostream &stream) const {
     stream << " % ";
     right_->Print(stream);
 }
+void ModOp::isFunction(Context &context) const{
+    left_->isFunction(context);
+    right_->isFunction(context);
+}

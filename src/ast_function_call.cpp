@@ -29,6 +29,9 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     context.variables.push_back(std::map<std::string, std::string>());
     context.variable_allocs.push_back(std::map<std::string, int>());
 
+
+
+
     // call function
     std::string f_name = name_->ReturnID();
     // go into context and find this variable with all its parameters
@@ -38,7 +41,18 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     for(auto it  = param_list.begin(); it != param_list.end(); it++){
         context.allocateVariable(it->first, it->second);
     }
+
+
+
+
     stream << "call " << f_name << std::endl;
+    stream << "mv x" << destReg << ", a0" << std::endl;
+    //stream << "addi sp, sp, " << context.getFunctionSize(f_name) << std::endl;
+
+
+
+
+
 
     /* // Restore context
     stream << "addi s0, s0, " << -(old_mem_offset+16) << std::endl;
@@ -74,4 +88,8 @@ void FunctionCall::Print(std::ostream &stream) const {}
         return 4;
     }
     */
+}
+
+void FunctionCall::isFunction(Context &context) const{
+    context.isFunctionCall();
 }

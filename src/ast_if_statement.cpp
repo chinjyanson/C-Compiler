@@ -24,3 +24,9 @@ void IfStatement::EmitRISC(std::ostream &stream, Context &context, int destReg) 
 void IfStatement::Print(std::ostream &stream) const
 {
 }
+
+void IfStatement::isFunction(Context &context) const{
+    condition_->isFunction(context);
+    statement0_->isFunction(context);
+    statement1_->isFunction(context);
+};

@@ -31,3 +31,7 @@ void LogicOr::Print(std::ostream &stream) const
     stream << " || ";
     right_->Print(stream);
 }
+void LogicOr::isFunction(Context &context) const{
+    left_->isFunction(context);
+    right_->isFunction(context);
+}

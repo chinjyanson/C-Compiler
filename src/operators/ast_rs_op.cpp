@@ -18,3 +18,7 @@ void RsOp::Print(std::ostream &stream) const {
     stream << " >> ";
     right_->Print(stream);
 }
+void RsOp::isFunction(Context &context) const{
+    left_->isFunction(context);
+    right_->isFunction(context);
+}

@@ -26,3 +26,8 @@ void WhileLoop::Print(std::ostream &stream) const
     stream << ") ";
     statement1_->Print(stream);
 }
+
+void WhileLoop::isFunction(Context &context) const{
+    condition_->isFunction(context);
+    statement1_->isFunction(context);
+}

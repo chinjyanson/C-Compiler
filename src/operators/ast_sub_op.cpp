@@ -18,3 +18,7 @@ void SubOp::Print(std::ostream &stream) const {
     stream << " - ";
     right_->Print(stream);
 }
+void SubOp::isFunction(Context &context) const{
+    left_->isFunction(context);
+    right_->isFunction(context);
+}
