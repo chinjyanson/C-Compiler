@@ -11,7 +11,10 @@ class Parameter : public Node
 {
 public:
     Parameter(Node *dec_spec, Node *declarator) : dec_spec_(dynamic_cast<TypeSpecifier*>(dec_spec)), declarator_(dynamic_cast<Identifier*>(declarator)) {}
-    ~Parameter(){}
+    ~Parameter(){
+        delete dec_spec_;
+        delete declarator_;
+    }
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     std::string ReturnID() const override;

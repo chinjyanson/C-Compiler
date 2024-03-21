@@ -12,7 +12,10 @@ private:
 
 public:
     AssignOp(Node *var, Node *expr) : var_(dynamic_cast<VariableCall*>(var)), expr_(expr) {}
-    ~AssignOp() {}
+    ~AssignOp() {
+        delete var_;
+        delete expr_;
+    }
     virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     virtual void Print(std::ostream &stream) const override;
     void isFunction(Context &context) const override;

@@ -15,7 +15,7 @@ private:
 public:
     SizeOf(Node *type): type_(type) {};
     virtual ~SizeOf(){
-
+        delete type_;
     };
 
     void Print(std::ostream &stream) const override;

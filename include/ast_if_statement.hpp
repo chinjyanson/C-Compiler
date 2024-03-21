@@ -12,7 +12,11 @@ private:
 
 public:
     IfStatement(Node *condition, Node *statement1, Node *statement0) : condition_(condition), statement1_(statement1), statement0_(statement0) {}
-    ~IfStatement(){}
+    ~IfStatement(){
+        delete condition_;
+        delete statement1_;
+        delete statement0_;
+    }
 
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
