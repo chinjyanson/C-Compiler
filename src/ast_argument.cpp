@@ -10,6 +10,6 @@ void Argument::Print(std::ostream &stream) const{
     arg_->Print(stream);
 };
 
-int Argument::getSize() const{
-    return arg_->getSize();
+int Argument::getSize(Context &context) const{
+    return arg_->getSize(context);
 }

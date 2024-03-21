@@ -18,7 +18,7 @@ public:
     virtual void Print(std::ostream &stream) const = 0;
     virtual std::string ReturnID() const;
     virtual std::string returnType() const;
-    virtual int getSize() const;
+    virtual int getSize(Context &context) const;
     virtual void mapParams(Context &context) const;
     virtual void mapVars(Context &context) const;
     virtual void isFunction(Context &context) const;

@@ -63,21 +63,20 @@ void FunctionCall::Print(std::ostream &stream) const {
     stream << ")";
 }
 
- int FunctionCall::getSize() const{
-    /* get f_type from context probably
+ int FunctionCall::getSize(Context &context) const{
+    std::string f_type = context.getFunctionType(name_->ReturnID());
     if(f_type=="char"){
         return 1;
     }
-    else if(f_type=="float"){
+    else if(f_type=="long"){
         return 8;
     }
     else if(f_type=="double"){
-        return 4;
+        return 8;
     }
     else{
         return 4;
     }
-    */
 }
 
 void FunctionCall::isFunction(Context &context) const{

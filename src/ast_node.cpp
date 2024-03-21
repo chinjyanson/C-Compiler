@@ -20,7 +20,7 @@ std::string Node::returnType() const{
     return "you should not be here, this is just a node";
 }
 
-int Node::getSize() const{
+int Node::getSize(Context &context) const{
     return -1;
 }
 

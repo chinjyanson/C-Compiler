@@ -10,7 +10,7 @@ void IntConstant::Print(std::ostream &stream) const
     stream << value_;
 }
 
-int IntConstant::getSize() const {
+int IntConstant::getSize(Context &context) const {
     return 4;
 }
 
@@ -24,6 +24,6 @@ void FloatConstant::Print(std::ostream &stream) const
     stream << value_;
 }
 
-int FloatConstant::getSize() const {
+int FloatConstant::getSize(Context &context) const {
     return 8;
 }

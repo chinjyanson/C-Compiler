@@ -15,7 +15,7 @@ public:
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     std::string returnType() const override;
-    int getSize() const override;
+    int getSize(Context &context) const override;
 };
 
 #endif

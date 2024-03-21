@@ -164,6 +164,13 @@ public:
         functions[func_name] = func_type;
         // might add the params here idk yet
     }
+    std::string getFunctionType(std::string func_name){
+        auto it = functions.find(func_name);
+        if (it == functions.end()) {
+            return "Not found";
+        }
+        return it->second;
+    }
     void addParams(std::string func_name, std::map<std::string, std::string> param_list){
         function_params[func_name] = param_list;
     }

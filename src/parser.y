@@ -102,8 +102,8 @@ unary_expression
 	| INC_OP unary_expression
 	| DEC_OP unary_expression
 	| unary_operator cast_expression {$$ = new UnaryOp($1, $2);}
-	| SIZEOF unary_expression
-	| SIZEOF '(' type_name ')'
+	| SIZEOF unary_expression {$$ = new SizeOf($2);}
+	| SIZEOF '(' type_name ')' {$$ = new SizeOf($3);}
 	;
 
 unary_operator
@@ -254,14 +254,14 @@ storage_class_specifier
 
 type_specifier
 	: VOID { $$ = new TypeSpecifier("void");}
-	| CHAR
-	| SHORT
+	| CHAR { $$ = new TypeSpecifier("char");}
+	| SHORT { $$ = new TypeSpecifier("short");}
 	| INT { $$ = new TypeSpecifier("int");}
 	| LONG { $$ = new TypeSpecifier("long");}
 	| FLOAT { $$ = new TypeSpecifier("float");}
 	| DOUBLE { $$ = new TypeSpecifier("double");}
-	| SIGNED
-	| UNSIGNED
+	| SIGNED { $$ = new TypeSpecifier("signed");}
+	| UNSIGNED { $$ = new TypeSpecifier("unsigned");}
   | struct_specifier
 	| enum_specifier
 	| TYPE_NAME
@@ -315,7 +315,7 @@ enumerator
 	;
 
 declarator
-	: pointer direct_declarator
+	: pointer direct_declarator // {$$ = new PointerDeclarator($1, $2);}
 	| direct_declarator { $$ = $1; }
 	;
 

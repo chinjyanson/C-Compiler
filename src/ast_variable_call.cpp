@@ -35,15 +35,16 @@ std::string VariableCall::ReturnID() const {
     return identifier_;
 }
 
-int VariableCall::getSize() const{
-    if(identifier_=="char"){
+int VariableCall::getSize(Context &context) const{
+    std::string type_ = context.getVariableType(identifier_);
+    if(type_=="char"){
         return 1;
     }
-    else if(identifier_=="float"){
+    else if(type_=="double"){
         return 8;
     }
-    else if(identifier_=="double"){
-        return 4;
+    else if(type_=="long"){
+        return 8;
     }
     else{
         return 4;

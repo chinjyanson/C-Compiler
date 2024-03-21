@@ -12,7 +12,7 @@ std::string TypeSpecifier::returnType() const{
     return type_;
 }
 
-int TypeSpecifier::getSize() const{
+int TypeSpecifier::getSize(Context &context) const{
     if(type_=="char"){
         return 1;
     }

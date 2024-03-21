@@ -6,7 +6,7 @@
 #include <map>
 #include <memory>
 #include <iostream>
-#include "ast_node.hpp" 
+#include "ast_node.hpp"
 
 class SizeOf : public Node
 {
@@ -20,8 +20,8 @@ public:
 
     void Print(std::ostream &stream) const override;
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
-    int getSize() const;
+    int getSize(Context &context) const override;
 };
 
 
-#endif 
+#endif

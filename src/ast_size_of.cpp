@@ -10,24 +10,19 @@ void SizeOf::Print(std::ostream &stream) const
 
 void SizeOf::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    int size = type_->getSize();
+    int size = type_->getSize(context);
 
     if (size == -1){
         std::string var_name = type_->ReturnID();
         std::string type = context.getVariableType(var_name);
-        if(type == "int"){
-            size = 4;
-        }
-        else if(type == "char"){
-            size = 1;
-        }
+        size = context.checkSize(type);
     }
 
-    stream << "li " << destReg << ", " << size << std::endl;
+    stream << "li x" << destReg << ", " << size << std::endl;
 }
 
-int SizeOf::getSize() const
+int SizeOf::getSize(Context &context) const
 {
-    return type_->getSize();
+    return type_->getSize(context);
 }
 
