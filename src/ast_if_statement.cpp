@@ -16,9 +16,6 @@ void IfStatement::EmitRISC(std::ostream &stream, Context &context, int destReg) 
         statement0_->EmitRISC(stream, context, destReg);
     }
     stream << "." << branchOut << ":" << std::endl;
-
-
-
 }
 
 void IfStatement::Print(std::ostream &stream) const
@@ -27,11 +24,15 @@ void IfStatement::Print(std::ostream &stream) const
 
 void IfStatement::isFunction(Context &context) const{
     condition_->isFunction(context);
-    statement0_->isFunction(context);
+    if(statement0_ != nullptr){
+        statement0_->isFunction(context);
+    }
     statement1_->isFunction(context);
 };
 void IfStatement::mapVars(Context &context) const{
     condition_->mapVars(context);
-    statement0_->isFunction(context);
+    if(statement0_ != nullptr){
+        statement0_->isFunction(context);
+    }
     statement1_->mapVars(context);
 }

@@ -1,9 +1,5 @@
-int f()
-{
-    return 15;
-}
-
 int g()
 {
-    return f();
+    int x = -15;
+    return -x;
 }

@@ -2,13 +2,6 @@
 
 void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
-    // load arguments into registers
-    if(args_!=nullptr){
-        context.freeParamRegs();
-        args_->EmitRISC(stream, context, destReg);
-        context.freeParamRegs();
-    }
-
     /* // Store current state of context
     int old_mem_offset = context.mem_offset;
     std::vector<std::map<std::string, std::string>> old_variables;
@@ -29,30 +22,24 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     context.variables.push_back(std::map<std::string, std::string>());
     context.variable_allocs.push_back(std::map<std::string, int>());
 
-
-
-
     // call function
     std::string f_name = name_->ReturnID();
-    // go into context and find this variable with all its parameters
-    // in the new scope, set up the variables for this
-    // you need to allocate memory space for them too
-    std::map<std::string, std::string> param_list = context.returnParamList(f_name);
-    for(auto it  = param_list.begin(); it != param_list.end(); it++){
-        context.allocateVariable(it->first, it->second);
+    if(args_!=nullptr){
+        context.freeParamRegs();
+        args_->EmitRISC(stream, context, destReg);
+        context.freeParamRegs();
+
+        std::map<std::string, std::string> param_list = context.returnParamList(f_name);
+        for(auto it  = param_list.begin(); it != param_list.end(); it++){
+            context.allocateVariable(it->first, it->second);
+        }
     }
-
-
-
 
     stream << "call " << f_name << std::endl;
     stream << "mv x" << destReg << ", a0" << std::endl;
-    //stream << "addi sp, sp, " << context.getFunctionSize(f_name) << std::endl;
 
-
-
-
-
+    context.variables.pop_back();
+    context.variable_allocs.pop_back();
 
     /* // Restore context
     stream << "addi s0, s0, " << -(old_mem_offset+16) << std::endl;
@@ -66,9 +53,6 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
         context.variable_allocs.push_back(std::move(scope));
     }
     old_allocs.clear(); */
-
-    context.variables.pop_back();
-    context.variable_allocs.pop_back();
 }
 
 void FunctionCall::Print(std::ostream &stream) const {}

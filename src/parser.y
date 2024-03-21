@@ -28,7 +28,7 @@
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
 %type <node> external_declaration function_definition primary_expression postfix_expression
-%type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
+%type <node> unary_expression unary_operator cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
@@ -38,7 +38,7 @@
 
 %type <nodes>  translation_unit statement_list init_declarator_list declaration_list parameter_list argument_expression_list
 
-%type <string> unary_operator assignment_operator storage_class_specifier
+%type <string> assignment_operator storage_class_specifier
 
 %type <number_int> INT_CONSTANT STRING_LITERAL
 %type <number_float> FLOAT_CONSTANT
@@ -78,7 +78,7 @@ primary_expression
 	}
     | FLOAT_CONSTANT
 	| STRING_LITERAL
-	| '(' expression ')' // need to do this
+	| '(' expression ')' {$$ = $2;} // need to do this
 	;
 
 postfix_expression
@@ -88,8 +88,8 @@ postfix_expression
 	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
-	| postfix_expression INC_OP // OMG THE ++ OPERATOR, I LOVE THIS FELLA
-	| postfix_expression DEC_OP // THE -- ONE TOO
+	| postfix_expression INC_OP {$$ = new PostOp($1, "++");}
+	| postfix_expression DEC_OP {$$ = new PostOp($1, "--");}
 	;
 
 argument_expression_list
@@ -101,16 +101,16 @@ unary_expression
 	: postfix_expression { $$ = $1; }
 	| INC_OP unary_expression
 	| DEC_OP unary_expression
-	| unary_operator cast_expression
+	| unary_operator cast_expression {$$ = new UnaryOp($1, $2);}
 	| SIZEOF unary_expression
 	| SIZEOF '(' type_name ')'
 	;
 
 unary_operator
 	: '&'
-	| '*'
+	| '*' {$$ = new UnarySign("*");}
 	| '+'
-	| '-'
+	| '-' {$$ = new UnarySign("-");}
 	| '~'
 	| '!'
 	;
@@ -330,7 +330,7 @@ direct_declarator
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')' // i take it back, no idea what this is for ngl
 	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);
+		$$ = new DirectDeclarator($1);  // what if it thinks this is a function call tho
 	}
 	;
 
