@@ -27,3 +27,6 @@ void CompStatement::Print(std::ostream &stream) const {
 void CompStatement::mapVars(Context &context) const{
     branch_->mapVars(context);
 }
+void CompStatement::isFunction(Context &context) const{
+    branch_->isFunction(context);
+}

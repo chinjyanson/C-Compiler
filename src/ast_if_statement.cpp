@@ -30,3 +30,8 @@ void IfStatement::isFunction(Context &context) const{
     statement0_->isFunction(context);
     statement1_->isFunction(context);
 };
+void IfStatement::mapVars(Context &context) const{
+    condition_->mapVars(context);
+    statement0_->isFunction(context);
+    statement1_->mapVars(context);
+}
