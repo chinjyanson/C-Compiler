@@ -437,7 +437,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement {$$ = new IfStatement($3, $5, nullptr);}
 	| IF '(' expression ')' statement ELSE statement {$$ = new IfStatement($3, $5, $7);}
-	| SWITCH '(' expression ')' statement
+	| SWITCH '(' expression ')' statement {$$ = new Switch($3, $5);}
 	;
 
 iteration_statement
