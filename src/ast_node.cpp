@@ -39,7 +39,15 @@ bool Node::isPointer(Context &context) const{
 void Node::UpdateVar(std::ostream &stream, Context &context, int destReg) const{
 
 }
+void Node::loadAddress(std::ostream &stream, Context &context,int destReg) const{
 
+}
+int Node::getnElements() const{
+    return -1;
+}
+int Node::getValue() const{
+    return -1;
+}
 
 void NodeList::PushBack(Node *item)
 {

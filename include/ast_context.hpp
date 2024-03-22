@@ -27,6 +27,7 @@ public:
     //Global variable table:
     std::vector<std::map<std::string, std::string>> variables; // Scope: Variable name - Type
     std::vector<std::vector<std::string>> pointers; //  Scope: Pointers
+    std::vector<std::map<std::string, int>> arrays; // Scope: Array name - size
 
     //Function table:
     std::map<std::string, std::string> functions; // Function name - Type
@@ -158,12 +159,22 @@ public:
         }
         pointers[pointers.size()-1].push_back(variable_name);
     }
+    void AddArray(std::string variable_name, int size){
+        if(arrays.size()==0){
+            arrays.push_back(std::map<std::string, int>());
+        }
+        arrays[arrays.size()-1][variable_name] = size;
+    }
 
     int allocateVariable(std::string variable_name, std::string variable_type){
         if(variable_allocs.size()==0){
             variable_allocs.push_back(std::map<std::string, int>());
         }
-        mem_offset -= checkSize(variable_type);
+        int array_size = checkArraySize(variable_name);
+        if(array_size==-1){
+            array_size = 1;
+        }
+        mem_offset -= (checkSize(variable_type)*array_size);
         variable_allocs[variable_allocs.size()-1][variable_name] = mem_offset;
         declareVariable(variable_name, variable_type);
         return mem_offset;
@@ -204,6 +215,16 @@ public:
             }
         }
         return false;
+    }
+    int checkArraySize(std::string variable_name) const{
+        if(arrays.size()!=0){
+            auto it = arrays[arrays.size()-1].find(variable_name);
+            if (it == arrays[arrays.size()-1].end()) {
+                return -1;
+            }
+            return it->second;
+        }
+        return -1;
     }
     int checkCurrentScopeForVarAlloc(std::string variable_name) const {
         auto it = variable_allocs[variable_allocs.size()-1].find(variable_name);
