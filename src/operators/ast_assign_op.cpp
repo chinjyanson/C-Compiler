@@ -7,6 +7,7 @@ void AssignOp::EmitRISC(std::ostream &stream, Context &context, int destReg) con
 
     if(is_array!=-1){
         var_->loadAddress(stream, context, destReg);
+        expr_->EmitRISC(stream, context, expr_reg);
         stream << "sw x" << expr_reg << ", 0(x" << destReg << ")" << std::endl;
     }
     else{
