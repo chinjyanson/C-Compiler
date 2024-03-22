@@ -7,7 +7,7 @@ void VariableCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     int mem_offset = context.findVariable(variable_name);
     if(mem_offset != -1){
         if(is_array!=-1){
-            // stream << "addi x" << destReg << ", s0, " << mem_offset << std::endl;
+            stream << "addi x" << destReg << ", s0, " << mem_offset << std::endl;
         }
         else{
             stream << "lw x" << destReg << ", " << mem_offset << "(s0)" << std::endl;
