@@ -9,7 +9,9 @@ public:
     Multiline(Node *declaration_list, Node *statement_list) : declaration_list_(declaration_list), statement_list_(statement_list) {};
     ~Multiline(){
         delete declaration_list_;
-        delete statement_list_;
+        if (statement_list_ != nullptr){
+            delete statement_list_;
+        }
     };
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;

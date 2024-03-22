@@ -39,7 +39,8 @@ public:
     {
         for (auto node : nodes_)
         {
-            delete node;
+            if (node != nullptr)
+                delete node;
         }
     }
 

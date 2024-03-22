@@ -11,7 +11,8 @@ private:
 public:
     NestStatement(Node *branch) : branch_(branch) {}
     ~NestStatement() {
-        delete branch_;
+        if(branch_ != nullptr)
+            delete branch_;
     }
 
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;

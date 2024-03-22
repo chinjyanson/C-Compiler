@@ -19,10 +19,12 @@ void CompStatement::EmitRISC(std::ostream &stream, Context &context, int destReg
             context.pointers.pop_back();
         }
     }
-
+    else{
+        std::cerr << "Error: Empty compound statement" << std::endl;
+    }
 }
 
-void CompStatement::Print(std::ostream &stream) const {
+void CompStatement::Print(std::ostream &stream)const {
     stream << "{";
     branch_->Print(stream);
     stream << "}";

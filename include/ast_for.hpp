@@ -16,7 +16,6 @@ public:
         delete init_;
         delete condition_;
         delete increment_;
-        delete statement_;
     }
 
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;

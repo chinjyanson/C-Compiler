@@ -12,7 +12,9 @@ public:
     ReturnStatement(Node *expression) : expression_(expression) {}
     ~ReturnStatement()
     {
-        delete expression_;
+        if (expression_ != nullptr){
+            delete expression_;
+        }
     };
 
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;

@@ -11,7 +11,8 @@ private:
 public:
     CompStatement(Node *branch) : branch_(branch) {}
     ~CompStatement() {
-        delete branch_;
+        if(branch_ != nullptr)
+            delete branch_;
     }
 
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
