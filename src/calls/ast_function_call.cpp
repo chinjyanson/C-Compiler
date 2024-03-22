@@ -1,4 +1,4 @@
-#include "ast_function_call.hpp"
+#include "ast/calls/ast_function_call.hpp"
 
 void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

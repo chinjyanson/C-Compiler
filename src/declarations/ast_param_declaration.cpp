@@ -1,4 +1,4 @@
-#include "ast_param_declaration.hpp"
+#include "ast/declarations/ast_param_declaration.hpp"
 
 void Parameter::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

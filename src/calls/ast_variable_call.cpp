@@ -1,4 +1,4 @@
-#include "ast_variable_call.hpp"
+#include "ast/calls/ast_variable_call.hpp"
 
 void VariableCall::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
