@@ -1,4 +1,4 @@
-#include "ast_pointer.hpp"
+#include "ast/pointers/ast_pointer.hpp"
 
 void Pointer::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

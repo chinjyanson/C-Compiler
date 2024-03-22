@@ -1,4 +1,4 @@
-#include "ast_compound_statement.hpp"
+#include "ast/multi/ast_compound_statement.hpp"
 
 void CompStatement::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
     if(branch_ != nullptr){

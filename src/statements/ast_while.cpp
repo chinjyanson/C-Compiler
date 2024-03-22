@@ -1,4 +1,4 @@
-#include "ast_while.hpp"
+#include "ast/statements/ast_while.hpp"
 
 void WhileLoop::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

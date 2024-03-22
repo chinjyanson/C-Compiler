@@ -1,4 +1,4 @@
-#include "ast_variable_init.hpp"
+#include "ast/declarations/ast_variable_init.hpp"
 
 void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

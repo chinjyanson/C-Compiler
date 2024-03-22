@@ -1,4 +1,4 @@
-#include "ast_pointer_declarator.hpp"
+#include "ast/pointers/ast_pointer_declarator.hpp"
 
 void PointerDeclarator::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
