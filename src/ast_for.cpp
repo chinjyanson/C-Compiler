@@ -9,8 +9,10 @@ void ForLoop::EmitRISC(std::ostream &stream, Context &context, int destReg) cons
     init_->EmitRISC(stream, context, destReg);
     stream << "j ." << branchCheck << std::endl;
     stream << "." << branchLoop << ":" << std::endl;
-    statement_->EmitRISC(stream, context, destReg);
-    increment_->EmitRISC(stream, context, destReg);
+    if(statement_ != nullptr){
+        statement_->EmitRISC(stream, context, destReg);
+        increment_->EmitRISC(stream, context, destReg);
+    }
     stream << "." << branchCheck << ":" << std::endl;
     condition_->EmitRISC(stream, context, condition_reg);
     stream << "bne x" << condition_reg << ", zero, ." << branchLoop << std::endl;
@@ -25,7 +27,9 @@ void::ForLoop::Print(std::ostream &stream) const
     stream << "; ";
     increment_->Print(stream);
     stream << ") ";
-    statement_->Print(stream);
+    if(statement_ != nullptr){
+        statement_->Print(stream);
+    }
 }
 
 void ForLoop::isFunction(Context &context) const{

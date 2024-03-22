@@ -52,6 +52,7 @@
 #include "ast_pointer.hpp"
 #include "ast_pointer_declarator.hpp"
 #include "ast_array.hpp"
+#include "ast_emptynode.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

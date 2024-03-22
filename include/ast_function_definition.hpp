@@ -16,7 +16,9 @@ public:
     {
         delete declaration_specifiers_;
         delete declarator_;
-        delete compound_statement_;
+        if (compound_statement_ != nullptr){
+            delete compound_statement_;
+        }
     };
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;

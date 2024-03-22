@@ -394,7 +394,7 @@ statement
 	| compound_statement { $$ = new NestStatement($1); }
 	| expression_statement
 	| selection_statement
-	| iteration_statement
+	| iteration_statement {$$ = $1;}
 	| jump_statement { $$ = $1; }
 	;
 
@@ -406,8 +406,7 @@ labeled_statement
 
 compound_statement
 	: '{' '}' {
-		// TODO: correct this
-		$$ = new CompStatement(nullptr);
+		$$ = new EmptyNode();
 	}
 	| '{' statement_list '}' {
 		$$ = new CompStatement($2);
