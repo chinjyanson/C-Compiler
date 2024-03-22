@@ -36,10 +36,21 @@ void Node::isFunction(Context &context) const{
 bool Node::isPointer(Context &context) const{
     return false;
 }
+bool Node::isPointing() const{
+    return false;
+}
 void Node::UpdateVar(std::ostream &stream, Context &context, int destReg) const{
 
 }
+void Node::loadAddress(std::ostream &stream, Context &context,int destReg) const{
 
+}
+int Node::getnElements() const{
+    return -1;
+}
+int Node::getValue() const{
+    return -1;
+}
 
 void NodeList::PushBack(Node *item)
 {

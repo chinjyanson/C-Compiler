@@ -1,4 +1,4 @@
-#include "ast_declarations.hpp"
+#include "ast/declarations/ast_declarations.hpp"
 
 void Declarations::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

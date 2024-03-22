@@ -1,4 +1,4 @@
-#include "ast_jump_statement.hpp"
+#include "ast/statements/ast_jump_statement.hpp"
 
 void ReturnStatement::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

@@ -1,14 +1,27 @@
-#include "ast_assign_op.hpp"
+#include "ast/operators/ast_assign_op.hpp"
 
 void AssignOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
     int expr_reg = context.getFreeRegister();
+    int is_array = context.checkArraySize(var_->ReturnID());
+    bool is_pointing = var_->isPointing();
+    if(is_pointing){
+        expr_->EmitRISC(stream, context, expr_reg);
+        stream << "sw x" << expr_reg << ", 0(x" << destReg << ")" << std::endl;
+    }
+    else if(is_array>0){ // used to be !=-1
+        var_->loadAddress(stream, context, destReg);
+        expr_->EmitRISC(stream, context, expr_reg);
+        stream << "sw x" << expr_reg << ", 0(x" << destReg << ")" << std::endl;
+    }
+    else{
+        var_->EmitRISC(stream, context, destReg);
+        expr_->EmitRISC(stream, context, expr_reg);
+        stream << "mv x" << destReg << ", x" << expr_reg << std::endl;
+        context.freeRegister(expr_reg);
+        var_->UpdateVar(stream, context, destReg);
+    }
 
-    var_->EmitRISC(stream, context, destReg);
-    expr_->EmitRISC(stream, context, expr_reg);
-    stream << "mv x" << destReg << ", x" << expr_reg << std::endl;
-    var_->UpdateVar(stream, context, destReg);
-    context.freeRegister(expr_reg);
 
 }
 
@@ -20,3 +33,4 @@ void AssignOp::isFunction(Context &context) const{
     var_->isFunction(context);
     expr_->isFunction(context);
 }
+

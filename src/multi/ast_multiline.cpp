@@ -1,4 +1,4 @@
-#include "ast_multiline.hpp"
+#include "ast/multi/ast_multiline.hpp"
 
 void Multiline::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
@@ -13,6 +13,7 @@ void Multiline::Print(std::ostream &stream) const
 }
 
 void Multiline::mapVars(Context &context) const{
+    declaration_list_->mapVars(context);
     statement_list_->mapVars(context);
 }
 

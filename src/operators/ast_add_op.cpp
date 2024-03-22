@@ -42,3 +42,7 @@ void AddOp::isFunction(Context &context) const{
     left_->isFunction(context);
     right_->isFunction(context);
 }
+
+int AddOp::getValue() const{
+    return left_->getValue() + right_->getValue();
+}

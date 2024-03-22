@@ -2,7 +2,7 @@
 #define AST_ASSIGN_OP_HPP
 
 #include "ast_node.hpp"
-#include "ast_variable_call.hpp"
+#include "ast/calls/ast_variable_call.hpp"
 
 class AssignOp : public Node
 {

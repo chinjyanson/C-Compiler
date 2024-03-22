@@ -23,7 +23,11 @@ public:
     virtual void mapVars(Context &context) const;
     virtual void isFunction(Context &context) const;
     virtual bool isPointer(Context &context) const;
+    virtual bool isPointing() const;
     virtual void UpdateVar(std::ostream &stream, Context &context, int destReg) const;
+    virtual void loadAddress(std::ostream &stream, Context &context,int destReg) const;
+    virtual int getnElements() const;
+    virtual int getValue() const;
 };
 
 // Represents a list of nodes.
@@ -39,7 +43,8 @@ public:
     {
         for (auto node : nodes_)
         {
-            delete node;
+            if (node != nullptr)
+                delete node;
         }
     }
 

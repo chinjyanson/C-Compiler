@@ -41,3 +41,7 @@ void SubOp::isFunction(Context &context) const{
     left_->isFunction(context);
     right_->isFunction(context);
 }
+
+int SubOp::getValue() const{
+    return left_->getValue() - right_->getValue();
+}

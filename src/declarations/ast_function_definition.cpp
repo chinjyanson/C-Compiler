@@ -1,4 +1,4 @@
-#include "ast_function_definition.hpp"
+#include "ast/declarations/ast_function_definition.hpp"
 
 void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
@@ -6,6 +6,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
     context.variables.push_back(std::map<std::string, std::string>());
     context.variable_allocs.push_back(std::map<std::string, int>());
     context.pointers.push_back(std::vector<std::string>());
+    context.arrays.push_back(std::map<std::string, int>());
     context.function_scope = true;
 
     std::string func_name = declarator_->ReturnID();
@@ -83,6 +84,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
     context.variables.pop_back();
     context.variable_allocs.pop_back();
     context.pointers.pop_back();
+    context.arrays.pop_back();
     context.function_scope = false;
 
 
