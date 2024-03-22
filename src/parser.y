@@ -83,10 +83,10 @@ primary_expression
 
 postfix_expression
 	: primary_expression { $$ = $1; }
-	| postfix_expression '[' expression ']'
+	| postfix_expression '[' expression ']' // an array???
 	| postfix_expression '(' ')' {$$ = new FunctionCall($1, nullptr);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
-	| postfix_expression '.' IDENTIFIER
+	| postfix_expression '.' IDENTIFIER // struct properties/variables whatever you call them
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP {$$ = new PostOp($1, "++");}
 	| postfix_expression DEC_OP {$$ = new PostOp($1, "--");}
@@ -99,8 +99,8 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression { $$ = $1; }
-	| INC_OP unary_expression
-	| DEC_OP unary_expression
+	| INC_OP unary_expression // PRE-increment, ngl no idea how this will change in risc
+	| DEC_OP unary_expression // i know what it does in loops but uugh long to implement ngl
 	| unary_operator cast_expression {$$ = new UnaryOp($1, $2);}
 	| SIZEOF unary_expression {$$ = new SizeOf($2);}
 	| SIZEOF '(' type_name ')' {$$ = new SizeOf($3);}
@@ -262,8 +262,8 @@ type_specifier
 	| DOUBLE { $$ = new TypeSpecifier("double");}
 	| SIGNED { $$ = new TypeSpecifier("signed");}
 	| UNSIGNED { $$ = new TypeSpecifier("unsigned");}
-  | struct_specifier
-	| enum_specifier
+    | struct_specifier // i really wanna do structs
+	| enum_specifier   // or enums, that'd go hard
 	| TYPE_NAME
 	;
 
@@ -326,7 +326,7 @@ direct_declarator
 	}
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
-	| direct_declarator '[' ']'
+	| direct_declarator '[' ']' // array declarations?
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')' // i take it back, no idea what this is for ngl
 	| direct_declarator '(' ')' {
