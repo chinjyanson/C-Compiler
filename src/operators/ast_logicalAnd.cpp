@@ -27,10 +27,14 @@ void LogicAnd::EmitRISC(std::ostream &stream, Context &context, int destReg) con
 void LogicAnd::Print(std::ostream &stream) const
 {
     left_->Print(stream);
-    stream << " || ";
+    stream << " && ";
     right_->Print(stream);
 }
 void LogicAnd::isFunction(Context &context) const{
     left_->isFunction(context);
     right_->isFunction(context);
+}
+
+int LogicAnd::getValue() const{
+    return left_->getValue() && right_->getValue();
 }

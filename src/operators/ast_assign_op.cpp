@@ -28,3 +28,4 @@ void AssignOp::isFunction(Context &context) const{
     var_->isFunction(context);
     expr_->isFunction(context);
 }
+
