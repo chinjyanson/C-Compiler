@@ -7,9 +7,13 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context, int destReg) co
     int param_reg = context.findParamReg();
 
     int mem_offset = context.allocateVariable(id, typeName);
+    if(isPointer(context)){
+        context.addPointer(id);
+    }
 
     //dec_spec_->EmitRISC(stream, context, destReg); // this does nothing, it points to the typespec node
-    //declarator_->EmitRISC(stream, context, destReg); // this will print variable name into stream, no quiero
+    //declarator_->EmitRISC(stream, context, destReg); // this will output variable name to stream, no quiero
+    //                                                      or whataver pointer does
 
     if(typeName == "float"){
        stream << "fsw f" << param_reg << ", " << mem_offset << "(s0)" << std::endl;
@@ -39,4 +43,8 @@ std::string Parameter::ReturnID() const{
 
 std::string Parameter::returnType() const{
     return dec_spec_->returnType();
+}
+
+bool Parameter::isPointer(Context &context) const{
+    return declarator_->isPointer(context);
 }

@@ -3,14 +3,13 @@
 
 #include "ast_node.hpp"
 #include "ast_type_specifier.hpp"
-#include "ast_identifier.hpp"
 
 #include <string>
 
 class Parameter : public Node
 {
 public:
-    Parameter(Node *dec_spec, Node *declarator) : dec_spec_(dynamic_cast<TypeSpecifier*>(dec_spec)), declarator_(dynamic_cast<Identifier*>(declarator)) {}
+    Parameter(Node *dec_spec, Node *declarator) : dec_spec_(dynamic_cast<TypeSpecifier*>(dec_spec)), declarator_(declarator) {}
     ~Parameter(){
         delete dec_spec_;
         delete declarator_;
@@ -19,10 +18,11 @@ public:
     void Print(std::ostream &stream) const override;
     std::string ReturnID() const override;
     std::string returnType() const override;
+    bool isPointer(Context &context) const override;
 
 private:
     TypeSpecifier *dec_spec_;
-    Identifier *declarator_;
+    Node *declarator_;
 
 };
 

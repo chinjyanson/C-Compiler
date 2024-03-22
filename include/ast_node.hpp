@@ -22,7 +22,7 @@ public:
     virtual void mapParams(Context &context) const;
     virtual void mapVars(Context &context) const;
     virtual void isFunction(Context &context) const;
-    virtual void isPointer(Context &context) const;
+    virtual bool isPointer(Context &context) const;
     virtual void UpdateVar(std::ostream &stream, Context &context, int destReg) const;
 };
 

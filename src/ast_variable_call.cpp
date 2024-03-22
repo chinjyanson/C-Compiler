@@ -50,3 +50,7 @@ int VariableCall::getSize(Context &context) const{
         return 4;
     }
 }
+
+bool VariableCall::isPointer(Context &context) const{
+    return context.checkPointer(identifier_);
+}

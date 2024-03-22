@@ -14,6 +14,7 @@ class Context
 public:
     /* TODO decide what goes inside here */
     int is_function = 0;
+    bool function_scope = false;
     int n_branches = 0;
     int n_labels = 0;
     std::vector<std::string> labels; // for function returns before we exit them
@@ -25,6 +26,7 @@ public:
 
     //Global variable table:
     std::vector<std::map<std::string, std::string>> variables; // Scope: Variable name - Type
+    std::vector<std::vector<std::string>> pointers; //  Scope: Pointers
 
     //Function table:
     std::map<std::string, std::string> functions; // Function name - Type
@@ -150,6 +152,12 @@ public:
         }
         variables[variables.size()-1][variable_name] = variable_type;
     }
+    void addPointer(std::string variable_name){
+        if(pointers.size()==0){
+            pointers.push_back(std::vector<std::string>());
+        }
+        pointers[pointers.size()-1].push_back(variable_name);
+    }
 
     int allocateVariable(std::string variable_name, std::string variable_type){
         if(variable_allocs.size()==0){
@@ -188,6 +196,14 @@ public:
             return false;
         }
         return true;
+    }
+    bool checkPointer(std::string variable_name) const {
+        for(int i = 0; i < pointers[pointers.size()-1].size(); i++){
+            if (pointers[pointers.size()-1][i] == variable_name) {
+                return true;
+            }
+        }
+        return false;
     }
     int checkCurrentScopeForVarAlloc(std::string variable_name) const {
         auto it = variable_allocs[variable_allocs.size()-1].find(variable_name);

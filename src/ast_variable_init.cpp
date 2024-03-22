@@ -17,6 +17,9 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
     int check_var = context.checkCurrentScopeForVarAlloc(variable_name);
     if(check_var == -1){
         int mem_offset = context.allocateVariable(variable_name, variable_type);
+        if(isPointer(context)){
+            context.addPointer(variable_name);
+        }
         stream << "sw x" << destReg << ", " << mem_offset << "(s0)" << std::endl;
     }
     // else
@@ -36,4 +39,8 @@ void VariableInit::Print(std::ostream &stream) const {
 
 std::string VariableInit::ReturnID() const {
     return declarator_->ReturnID();
+}
+
+bool VariableInit::isPointer(Context &context) const {
+    return declarator_->isPointer(context);
 }

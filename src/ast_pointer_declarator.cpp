@@ -18,8 +18,8 @@ void PointerDeclarator::mapVars(Context &context) const{
 void PointerDeclarator::isFunction(Context &context) const{
 
 }
-void PointerDeclarator::isPointer(Context &context) const{
-
+bool PointerDeclarator::isPointer(Context &context) const{
+    return true;
 }
 std::string PointerDeclarator::ReturnID() const{
     return identifier_->ReturnID();

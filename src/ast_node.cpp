@@ -33,8 +33,8 @@ void Node::mapVars(Context &context) const{
 void Node::isFunction(Context &context) const{
 
 }
-void Node::isPointer(Context &context) const{
-
+bool Node::isPointer(Context &context) const{
+    return false;
 }
 void Node::UpdateVar(std::ostream &stream, Context &context, int destReg) const{
 

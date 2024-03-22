@@ -2,17 +2,21 @@
 
 void CompStatement::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
     if(branch_ != nullptr){
-
-        if(!context.is_function){
+        bool old_scope = context.function_scope;
+        if(!context.function_scope){
             context.variables.push_back(std::map<std::string, std::string>());
             context.variable_allocs.push_back(std::map<std::string, int>());
+            context.pointers.push_back(std::vector<std::string>());
         }
 
+        context.function_scope = false;
         branch_->EmitRISC(stream, context, destReg);
+        context.function_scope = old_scope;
 
-        if(!context.is_function){
+        if(!context.function_scope){
             context.variables.pop_back();
             context.variable_allocs.pop_back();
+            context.pointers.pop_back();
         }
     }
 

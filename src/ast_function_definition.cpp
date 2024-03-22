@@ -2,6 +2,12 @@
 
 void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {
+    // Set up new space
+    context.variables.push_back(std::map<std::string, std::string>());
+    context.variable_allocs.push_back(std::map<std::string, int>());
+    context.pointers.push_back(std::vector<std::string>());
+    context.function_scope = true;
+
     std::string func_name = declarator_->ReturnID();
     std::string func_type = declaration_specifiers_->returnType();
     std::string endLabel = context.createLabel();
@@ -14,12 +20,6 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
 
     compound_statement_->isFunction(context);
     int is_call = context.is_function;
-
-    // Set up new space
-    /* context.variables.push_back(std::map<std::string, std::string>());
-    context.variable_allocs.push_back(std::map<std::string, int>());
-    int old_mem_offset = context.mem_offset; */
-
 
     stream << ".text" << std::endl;
     stream << ".globl " << func_name << std::endl;
@@ -79,6 +79,11 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, int de
 
     stream << "addi sp, sp, " << stacksize << std::endl;
     stream << "jr ra" << std::endl;
+
+    context.variables.pop_back();
+    context.variable_allocs.pop_back();
+    context.pointers.pop_back();
+    context.function_scope = false;
 
 
     /* int new_mem_offset = context.mem_offset;

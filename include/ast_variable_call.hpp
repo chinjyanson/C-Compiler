@@ -15,6 +15,7 @@ public:
     virtual void UpdateVar(std::ostream &stream, Context &context, int destReg) const override;
     std::string ReturnID() const override;
     int getSize(Context &context) const override;
+    bool isPointer(Context &context) const override;
 private:
     std::string identifier_;
 };

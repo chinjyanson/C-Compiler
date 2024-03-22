@@ -2,13 +2,27 @@
 
 void PostOp::EmitRISC(std::ostream &stream, Context &context, int destReg) const {
 
+    bool is_p = expr_->isPointer(context);
+
     expr_->EmitRISC(stream, context, destReg);
     if(op_=="--"){
-        stream << "addi x" << destReg << ", x" << destReg << ", -1" << std::endl;
+        if(is_p){
+            int size = expr_->getSize(context);
+            stream << "addi x" << destReg << ", x" << destReg << ", -" << size << std::endl;
+        }
+        else{
+            stream << "addi x" << destReg << ", x" << destReg << ", -1" << std::endl;
+        }
         expr_->UpdateVar(stream, context, destReg);
     }
     else if (op_ == "++"){
-        stream << "addi x" << destReg << ", x" << destReg << ", 1" << std::endl;
+        if(is_p){
+            int size = expr_->getSize(context);
+            stream << "addi x" << destReg << ", x" << destReg << ", " << size << std::endl;
+        }
+        else{
+            stream << "addi x" << destReg << ", x" << destReg << ", 1" << std::endl;
+        }
         expr_->UpdateVar(stream, context, destReg);
     }
 }

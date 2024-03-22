@@ -16,7 +16,7 @@ public:
     int getSize(Context &context) const override;
     void mapVars(Context &context) const override;
     void isFunction(Context &context) const override;
-    void isPointer(Context &context) const override;
+    bool isPointer(Context &context) const override;
 };
 
 #endif

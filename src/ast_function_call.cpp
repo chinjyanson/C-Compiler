@@ -21,6 +21,7 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
     // Set up new space
     context.variables.push_back(std::map<std::string, std::string>());
     context.variable_allocs.push_back(std::map<std::string, int>());
+    context.pointers.push_back(std::vector<std::string>());
 
     // call function
     std::string f_name = name_->ReturnID();
@@ -40,6 +41,7 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context, int destReg)
 
     context.variables.pop_back();
     context.variable_allocs.pop_back();
+    context.pointers.pop_back();
 
     /* // Restore context
     stream << "addi s0, s0, " << -(old_mem_offset+16) << std::endl;
