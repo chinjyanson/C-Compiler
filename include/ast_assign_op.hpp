@@ -7,11 +7,11 @@
 class AssignOp : public Node
 {
 private:
-    VariableCall *var_;
+    Node *var_;
     Node *expr_;
 
 public:
-    AssignOp(Node *var, Node *expr) : var_(dynamic_cast<VariableCall*>(var)), expr_(expr) {}
+    AssignOp(Node *var, Node *expr) : var_(var), expr_(expr) {}
     ~AssignOp() {
         delete var_;
         delete expr_;

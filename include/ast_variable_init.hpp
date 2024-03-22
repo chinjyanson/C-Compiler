@@ -10,7 +10,7 @@
 class VariableInit : public Node
 {
 public:
-    VariableInit(Node *declarator, Node *initializer) : declarator_(dynamic_cast<Identifier*>(declarator)), initializer_(initializer) {};
+    VariableInit(Node *declarator, Node *initializer) : declarator_(declarator), initializer_(initializer) {};
     ~VariableInit(){
         delete declarator_;
         delete initializer_;
@@ -19,7 +19,7 @@ public:
     void Print(std::ostream &stream) const override;
     std::string ReturnID() const override;
 private:
-    Identifier *declarator_;
+    Node *declarator_;
     Node *initializer_;
 };
 

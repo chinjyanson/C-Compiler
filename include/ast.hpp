@@ -49,6 +49,8 @@
 #include "ast_function_call.hpp"
 #include "ast_for.hpp"
 #include "ast_size_of.hpp"
+#include "ast_pointer.hpp"
+#include "ast_pointer_declarator.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

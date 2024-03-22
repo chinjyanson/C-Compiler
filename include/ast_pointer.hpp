@@ -1,22 +1,15 @@
-#ifndef AST_POINTER_DECLARATOR_HPP
-#define AST_POINTER_DECLARATOR_HPP
+#ifndef AST_POINTER_HPP
+#define AST_POINTER_HPP
 
 #include "ast_node.hpp"
-#include "ast_identifier.hpp"
 
-class PointerDeclarator : public Node
+class Pointer: public Node
 {
 private:
-    Node *pointer_;
-    Node *identifier_;
-
+    std::string star_;
 public:
-    PointerDeclarator(Node *pointer, Node *identifier) : pointer_(pointer), identifier_(identifier){};
-    ~PointerDeclarator()
-    {
-        delete pointer_;
-        delete identifier_;
-    };
+    Pointer(std::string star) : star_(star) {};
+    ~Pointer(){};
     void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
     virtual std::string ReturnID() const override;

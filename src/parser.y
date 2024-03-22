@@ -32,11 +32,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes>  translation_unit statement_list init_declarator_list declaration_list parameter_list argument_expression_list
+%type <nodes>  translation_unit statement_list init_declarator_list declaration_list parameter_list argument_expression_list pointer
 
 %type <string> assignment_operator storage_class_specifier
 
@@ -107,7 +107,7 @@ unary_expression
 	;
 
 unary_operator
-	: '&'
+	: '&' {$$ = new UnarySign("&");}
 	| '*' {$$ = new UnarySign("*");}
 	| '+'
 	| '-' {$$ = new UnarySign("-");}
@@ -315,7 +315,7 @@ enumerator
 	;
 
 declarator
-	: pointer direct_declarator // {$$ = new PointerDeclarator($1, $2);}
+	: pointer direct_declarator {$$ = new PointerDeclarator($1, $2);}
 	| direct_declarator { $$ = $1; }
 	;
 
@@ -335,8 +335,8 @@ direct_declarator
 	;
 
 pointer
-	: '*'
-	| '*' pointer
+	: '*'  {$$ = new NodeList(new Pointer("*"));}
+	| '*' pointer {$2->PushBack(new Pointer("*")); $$ = $2;}
 	;
 
 parameter_list

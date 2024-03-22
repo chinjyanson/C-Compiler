@@ -11,3 +11,7 @@ void UnarySign::EmitRISC(std::ostream &stream, Context &context, int destReg) co
 
 void UnarySign::Print(std::ostream &stream) const {
 }
+
+std::string UnarySign::ReturnID() const{
+    return u_op_;
+}

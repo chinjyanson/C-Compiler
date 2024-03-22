@@ -1,5 +1,6 @@
 int g()
 {
-    int x = -15;
-    return -x;
+    int y = 15;
+    int *x = &y;
+    return *x;
 }
