@@ -13,6 +13,9 @@ void IntConstant::Print(std::ostream &stream) const
 int IntConstant::getSize(Context &context) const {
     return 4;
 }
+int IntConstant::getValue() const{
+    return value_;
+}
 
 void FloatConstant::EmitRISC(std::ostream &stream, Context &context, int destReg) const
 {

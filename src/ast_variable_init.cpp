@@ -14,6 +14,11 @@ void VariableInit::EmitRISC(std::ostream &stream, Context &context, int destReg)
 
     std::string variable_name = declarator_->ReturnID();
     std::string variable_type = context.getVariableType(variable_name);
+    int array_size = declarator_->getnElements();
+    if(array_size>0){
+        context.AddArray(variable_name, array_size);
+    }
+
     int check_var = context.checkCurrentScopeForVarAlloc(variable_name);
     if(check_var == -1){
         int mem_offset = context.allocateVariable(variable_name, variable_type);

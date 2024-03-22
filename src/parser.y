@@ -83,7 +83,7 @@ primary_expression
 
 postfix_expression
 	: primary_expression { $$ = $1; }
-	| postfix_expression '[' expression ']' // an array???
+	| postfix_expression '[' expression ']' {$$ = new Array($1, $3);}
 	| postfix_expression '(' ')' {$$ = new FunctionCall($1, nullptr);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
 	| postfix_expression '.' IDENTIFIER // struct properties/variables whatever you call them
@@ -325,7 +325,7 @@ direct_declarator
 		delete $1;
 	}
 	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
+	| direct_declarator '[' constant_expression ']' {$$ = new Array($1, $3);}
 	| direct_declarator '[' ']' // array declarations?
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
 	| direct_declarator '(' identifier_list ')' // i take it back, no idea what this is for ngl
