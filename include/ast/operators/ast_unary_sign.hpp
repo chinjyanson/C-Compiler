@@ -16,6 +16,7 @@ public:
     virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     virtual void Print(std::ostream &stream) const override;
     std::string ReturnID() const override;
+    bool isPointing() const override;
 };
 
 #endif

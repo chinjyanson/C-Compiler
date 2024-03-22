@@ -15,3 +15,12 @@ void UnarySign::Print(std::ostream &stream) const {
 std::string UnarySign::ReturnID() const{
     return u_op_;
 }
+
+bool UnarySign::isPointing() const{
+    if (u_op_ == "*"){
+        return true;
+    }
+    else {
+        return false;
+    }
+}

@@ -36,6 +36,9 @@ void Node::isFunction(Context &context) const{
 bool Node::isPointer(Context &context) const{
     return false;
 }
+bool Node::isPointing() const{
+    return false;
+}
 void Node::UpdateVar(std::ostream &stream, Context &context, int destReg) const{
 
 }

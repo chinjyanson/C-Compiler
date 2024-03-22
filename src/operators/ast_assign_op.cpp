@@ -4,8 +4,12 @@ void AssignOp::EmitRISC(std::ostream &stream, Context &context, int destReg) con
 
     int expr_reg = context.getFreeRegister();
     int is_array = context.checkArraySize(var_->ReturnID());
-
-    if(is_array!=-1){
+    bool is_pointing = var_->isPointing();
+    if(is_pointing){
+        expr_->EmitRISC(stream, context, expr_reg);
+        stream << "sw x" << expr_reg << ", 0(x" << destReg << ")" << std::endl;
+    }
+    else if(is_array>0){ // used to be !=-1
         var_->loadAddress(stream, context, destReg);
         expr_->EmitRISC(stream, context, expr_reg);
         stream << "sw x" << expr_reg << ", 0(x" << destReg << ")" << std::endl;

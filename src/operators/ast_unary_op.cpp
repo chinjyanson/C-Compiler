@@ -20,3 +20,6 @@ void UnaryOp::Print(std::ostream &stream) const {
 void UnaryOp::isFunction(Context &context) const{
     expr_->isFunction(context);
 }
+bool UnaryOp::isPointing() const{
+    return u_op_->isPointing();
+}
