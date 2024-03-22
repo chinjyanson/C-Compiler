@@ -26,8 +26,8 @@ void Array::loadAddress(std::ostream &stream, Context &context, int destReg) con
     int dec_reg = context.getFreeRegister();
     int cons_reg = context.getFreeRegister();
     int temp_reg = context.getFreeRegister();
-    declarator_->EmitRISC(stream, context, dec_reg);
-    constant_->EmitRISC(stream, context, cons_reg);
+    declarator_->EmitRISC(stream, context, dec_reg); // load base address into dec_reg
+    constant_->EmitRISC(stream, context, cons_reg); // evaluate constant into cons_reg
 
     // this doesn't support 1[p] where p is a pointer
 
