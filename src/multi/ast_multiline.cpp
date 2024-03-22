@@ -13,6 +13,7 @@ void Multiline::Print(std::ostream &stream) const
 }
 
 void Multiline::mapVars(Context &context) const{
+    declaration_list_->mapVars(context);
     statement_list_->mapVars(context);
 }
 
