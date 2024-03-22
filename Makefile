@@ -2,7 +2,7 @@
 
 CXXFLAGS += -std=c++20 -W -Wall -g -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -fsanitize=address -static-libasan -O0 -rdynamic -I include
 
-SOURCES := $(wildcard src/*.cpp)
+SOURCES := $(wildcard src/*.cpp) $(wildcard src/**/*.cpp) 
 DEPENDENCIES := $(patsubst %.cpp,%.d,$(SOURCES))
 
 OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
@@ -43,10 +43,18 @@ coverage/index.html :
 
 clean :
 	@rm -rf coverage/
+	@rm -rf src/**/*.o
+	@rm -rf src/**/*.d
+	@rm -rf src/**/*.gcno
+	@rm -rf bin/
+	@rm -f src/**/*.tab.hpp
+	@rm -f src/**/*.tab.cpp
+	@rm -f src/**/*.yy.cpp
+	@rm -f src/**/*.output
+	@rm -rf coverage/
 	@rm -rf src/*.o
 	@rm -rf src/*.d
 	@rm -rf src/*.gcno
-	@rm -rf bin/
 	@rm -f src/*.tab.hpp
 	@rm -f src/*.tab.cpp
 	@rm -f src/*.yy.cpp

@@ -14,8 +14,16 @@ protected:
 public:
     Node(){};
     virtual ~Node();
-    virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
+    virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
+    virtual std::string ReturnID() const;
+    virtual std::string returnType() const;
+    virtual int getSize(Context &context) const;
+    virtual void mapParams(Context &context) const;
+    virtual void mapVars(Context &context) const;
+    virtual void isFunction(Context &context) const;
+    virtual bool isPointer(Context &context) const;
+    virtual void UpdateVar(std::ostream &stream, Context &context, int destReg) const;
 };
 
 // Represents a list of nodes.
@@ -37,8 +45,15 @@ public:
 
     std::vector<Node *> GetNodes() {return nodes_;}
     void PushBack(Node *item);
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
+    virtual void EmitBackwards(std::ostream &stream, Context &context, int destReg) const;
     virtual void Print(std::ostream &stream) const override;
+    virtual std::vector<std::string> returnIDs() const;
+    virtual std::vector<std::string> returnTypes() const;
+    virtual void mapVars(Context &context) const override;
+    virtual void mapParams(Context &context) const override;
+    virtual void isFunction(Context &context) const override;
+
 };
 
 #endif

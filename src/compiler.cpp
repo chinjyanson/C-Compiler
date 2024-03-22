@@ -35,7 +35,7 @@ void Compile(Node *root, CommandLineArguments &args)
 
     std::cout << "Compiling parsed AST..." << std::endl;
     std::ofstream output(args.compile_output_path, std::ios::trunc);
-    root->EmitRISC(output, ctx);
+    root->EmitRISC(output, ctx, 10);
     output.close();
     std::cout << "Compiled to: " << args.compile_output_path << std::endl;
 }
@@ -49,6 +49,9 @@ int main(int argc, char **argv)
 
     // Parse input and generate AST
     auto ast_root = Parse(command_line_arguments);
+
+    ast_root->Print(std::cout);
+
     if (ast_root == nullptr)
     {
         // Check something was actually returned by parseAST().

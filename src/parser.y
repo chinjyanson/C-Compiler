@@ -27,18 +27,18 @@
 %token STRUCT UNION ENUM ELLIPSIS
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%type <node> translation_unit external_declaration function_definition primary_expression postfix_expression argument_expression_list
-%type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
+%type <node> external_declaration function_definition primary_expression postfix_expression
+%type <node> unary_expression unary_operator cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
-%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
+%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
-%type <node> compound_statement declaration_list expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list
+%type <nodes>  translation_unit statement_list init_declarator_list declaration_list parameter_list argument_expression_list pointer
 
-%type <string> unary_operator assignment_operator storage_class_specifier
+%type <string> assignment_operator storage_class_specifier
 
 %type <number_int> INT_CONSTANT STRING_LITERAL
 %type <number_float> FLOAT_CONSTANT
@@ -52,8 +52,8 @@ ROOT
   : translation_unit { g_root = $1; }
 
 translation_unit
-	: external_declaration { $$ = $1; }
-	| translation_unit external_declaration
+	: external_declaration { $$ = new NodeList($1); }
+	| translation_unit external_declaration {$1->PushBack($2); $$ = $1;}
 	;
 
 external_declaration
@@ -72,125 +72,136 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER
+	: IDENTIFIER { $$ = new VariableCall(*$1); delete $1; }
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
     | FLOAT_CONSTANT
-	| STRING_LITERAL
-	| '(' expression ')'
+	| STRING_LITERAL // {$$ = new StringConstant($1);}
+	| '(' expression ')' {$$ = $2;} // need to do this
 	;
 
 postfix_expression
-	: primary_expression
-	| postfix_expression '[' expression ']'
-	| postfix_expression '(' ')'
-	| postfix_expression '(' argument_expression_list ')'
-	| postfix_expression '.' IDENTIFIER
+	: primary_expression { $$ = $1; }
+	| postfix_expression '[' expression ']' // an array???
+	| postfix_expression '(' ')' {$$ = new FunctionCall($1, nullptr);}
+	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
+	| postfix_expression '.' IDENTIFIER // struct properties/variables whatever you call them
 	| postfix_expression PTR_OP IDENTIFIER
-	| postfix_expression INC_OP
-	| postfix_expression DEC_OP
+	| postfix_expression INC_OP {$$ = new PostOp($1, "++");}
+	| postfix_expression DEC_OP {$$ = new PostOp($1, "--");}
 	;
 
 argument_expression_list
-	: assignment_expression
-	| argument_expression_list ',' assignment_expression
+	: assignment_expression  {$$ = new NodeList(new Argument($1));}
+	| argument_expression_list ',' assignment_expression  {$1->PushBack(new Argument($3)); $$ = $1;}
 	;
 
 unary_expression
-	: postfix_expression
-	| INC_OP unary_expression
-	| DEC_OP unary_expression
-	| unary_operator cast_expression
-	| SIZEOF unary_expression
-	| SIZEOF '(' type_name ')'
+	: postfix_expression { $$ = $1; }
+	| INC_OP unary_expression // PRE-increment, ngl no idea how this will change in risc
+	| DEC_OP unary_expression // i know what it does in loops but uugh long to implement ngl
+	| unary_operator cast_expression {$$ = new UnaryOp($1, $2);}
+	| SIZEOF unary_expression {$$ = new SizeOf($2);}
+	| SIZEOF '(' type_name ')' {$$ = new SizeOf($3);}
 	;
 
 unary_operator
-	: '&'
-	| '*'
+	: '&' {$$ = new UnarySign("&");}
+	| '*' {$$ = new UnarySign("*");}
 	| '+'
-	| '-'
+	| '-' {$$ = new UnarySign("-");}
 	| '~'
 	| '!'
 	;
 
 cast_expression
-	: unary_expression
+	: unary_expression { $$ = $1; }
 	| '(' type_name ')' cast_expression
 	;
 
 multiplicative_expression
-	: cast_expression
-	| multiplicative_expression '*' cast_expression
-	| multiplicative_expression '/' cast_expression
-	| multiplicative_expression '%' cast_expression
+	: cast_expression { $$ = $1; }
+	| multiplicative_expression '*' cast_expression { $$ = new MultiplyOp($1, $3); }
+	| multiplicative_expression '/' cast_expression { $$ = new DivideOp($1, $3); }
+	| multiplicative_expression '%' cast_expression { $$ = new ModOp($1, $3);}
 	;
 
 additive_expression
-	: multiplicative_expression
-	| additive_expression '+' multiplicative_expression { $$ = new Add($1, $3); }
-	| additive_expression '-' multiplicative_expression
+	: multiplicative_expression { $$ = $1; }
+	| additive_expression '+' multiplicative_expression { $$ = new AddOp($1, $3); }
+	| additive_expression '-' multiplicative_expression { $$ = new SubOp($1, $3); }
 	;
 
 shift_expression
-	: additive_expression
-	| shift_expression LEFT_OP additive_expression
-	| shift_expression RIGHT_OP additive_expression
+	: additive_expression { $$ = $1; }
+	| shift_expression LEFT_OP additive_expression  {$$ = new LsOp($1, $3);}
+	| shift_expression RIGHT_OP additive_expression  {$$ = new RsOp($1, $3);}
 	;
 
 relational_expression
-	: shift_expression
-	| relational_expression '<' shift_expression
-	| relational_expression '>' shift_expression
-	| relational_expression LE_OP shift_expression
-	| relational_expression GE_OP shift_expression
+	: shift_expression { $$ = $1; }
+	| relational_expression '<' shift_expression {$$ = new LtOp($1, $3);}
+	| relational_expression '>' shift_expression {$$ = new GtOp($1, $3);}
+	| relational_expression LE_OP shift_expression {$$ = new LeOp($1, $3);}
+	| relational_expression GE_OP shift_expression {$$ = new GeOp($1, $3);}
 	;
 
 equality_expression
-	: relational_expression
-	| equality_expression EQ_OP relational_expression
-	| equality_expression NE_OP relational_expression
+	: relational_expression { $$ = $1; }
+	| equality_expression EQ_OP relational_expression {$$ = new EqOp($1, $3);}
+	| equality_expression NE_OP relational_expression {$$ = new NeOp($1, $3);}
 	;
 
 and_expression
-	: equality_expression
-	| and_expression '&' equality_expression
+	: equality_expression { $$ = $1; }
+	| and_expression '&' equality_expression { $$ = new BitwiseAnd($1, $3); }
 	;
 
 exclusive_or_expression
-	: and_expression
-	| exclusive_or_expression '^' and_expression
+	: and_expression { $$ = $1; }
+	| exclusive_or_expression '^' and_expression { $$ = new BitwiseXor($1, $3); }
 	;
 
 inclusive_or_expression
-	: exclusive_or_expression
-	| inclusive_or_expression '|' exclusive_or_expression
+	: exclusive_or_expression { $$ = $1; }
+	| inclusive_or_expression '|' exclusive_or_expression { $$ = new BitwiseOr($1, $3); }
 	;
 
 logical_and_expression
-	: inclusive_or_expression
-	| logical_and_expression AND_OP inclusive_or_expression
+	: inclusive_or_expression { $$ = $1; }
+	| logical_and_expression AND_OP inclusive_or_expression { $$ = new LogicAnd($1, $3); }
 	;
 
 logical_or_expression
-	: logical_and_expression
-	| logical_or_expression OR_OP logical_and_expression
+	: logical_and_expression { $$ = $1; }
+	| logical_or_expression OR_OP logical_and_expression { $$ = new LogicOr($1, $3); }
 	;
 
 conditional_expression
-	: logical_or_expression
-	| logical_or_expression '?' expression ':' conditional_expression
+	: logical_or_expression { $$ = $1; }
+	| logical_or_expression '?' expression ':' conditional_expression {$$ = new IfStatement($1, $3, $5);}
 	;
 
 assignment_expression
-	: conditional_expression
-	| unary_expression assignment_operator assignment_expression
+	: conditional_expression { $$ = $1; }
+	// | unary_expression assignment_operator assignment_expression { $$ = new AssignOp($1, $3); } //this also originally had 3 args
+    | unary_expression '=' assignment_expression { $$ = new AssignOp($1, $3); }
+	| unary_expression MUL_ASSIGN assignment_expression { $$ = new AssignOp($1, new MultiplyOp($1, $3)); }
+	| unary_expression DIV_ASSIGN assignment_expression { $$ = new AssignOp($1, new DivideOp($1, $3)); }
+	| unary_expression MOD_ASSIGN assignment_expression {$$ = new AssignOp($1, new ModOp($1, $3));}
+	| unary_expression ADD_ASSIGN assignment_expression { $$ = new AssignOp($1, new AddOp($1, $3)); }
+	| unary_expression SUB_ASSIGN assignment_expression { $$ = new AssignOp($1, new SubOp($1, $3)); }
+	| unary_expression LEFT_ASSIGN assignment_expression { $$ = new AssignOp($1, new LsOp($1, $3)); }
+	| unary_expression RIGHT_ASSIGN assignment_expression { $$ = new AssignOp($1, new RsOp($1, $3)); }
+	| unary_expression AND_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseAnd($1, $3)); }
+	| unary_expression XOR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseXor($1, $3)); }
+	| unary_expression OR_ASSIGN assignment_expression { $$ = new AssignOp($1, new BitwiseOr($1, $3)); }
 	;
 
 assignment_operator
-	: '='
-	| MUL_ASSIGN
+	: '=' // i was originally doing it here, but it complained at me saying it wanted to be a string pointer
+	| MUL_ASSIGN  // so i just decided to circumvent it entirely.
 	| DIV_ASSIGN
 	| MOD_ASSIGN
 	| ADD_ASSIGN
@@ -203,7 +214,7 @@ assignment_operator
 	;
 
 expression
-	: assignment_expression
+	: assignment_expression { $$ = $1; }
 	| expression ',' assignment_expression
 	;
 
@@ -213,7 +224,7 @@ constant_expression
 
 declaration
 	: declaration_specifiers ';'
-	| declaration_specifiers init_declarator_list ';' // handle variables here TypeSpec class, NodeList of Identifier class
+	| declaration_specifiers init_declarator_list ';' { $$ = new Declarations($1, $2); }
 	;
 
 declaration_specifiers
@@ -224,13 +235,13 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator {$$ = new NodeList($1); }
-	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$ = $1; }
+	: init_declarator { $$ = new NodeList($1); }
+	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$=$1; }
 	;
 
 init_declarator
-	: declarator { $$ = $1; }
-	| declarator '=' initializer
+	: declarator {$$ = new VariableInit($1, nullptr); }
+	| declarator '=' initializer { $$ = new VariableInit($1, $3); }
 	;
 
 storage_class_specifier
@@ -242,19 +253,17 @@ storage_class_specifier
 	;
 
 type_specifier
-	: VOID
-	| CHAR
-	| SHORT
-	| INT {
-		$$ = new TypeSpecifier("int");
-	}
-	| LONG
-	| FLOAT
-	| DOUBLE
-	| SIGNED
-	| UNSIGNED
-  | struct_specifier
-	| enum_specifier
+	: VOID { $$ = new TypeSpecifier("void");}
+	| CHAR { $$ = new TypeSpecifier("char");}
+	| SHORT { $$ = new TypeSpecifier("short");}
+	| INT { $$ = new TypeSpecifier("int");}
+	| LONG { $$ = new TypeSpecifier("long");}
+	| FLOAT { $$ = new TypeSpecifier("float");}
+	| DOUBLE { $$ = new TypeSpecifier("double");}
+	| SIGNED { $$ = new TypeSpecifier("signed");}
+	| UNSIGNED { $$ = new TypeSpecifier("unsigned");}
+    | struct_specifier // i really wanna do structs
+	| enum_specifier   // or enums, that'd go hard
 	| TYPE_NAME
 	;
 
@@ -306,7 +315,7 @@ enumerator
 	;
 
 declarator
-	: pointer direct_declarator
+	: pointer direct_declarator {$$ = new PointerDeclarator($1, $2);}
 	| direct_declarator { $$ = $1; }
 	;
 
@@ -317,30 +326,28 @@ direct_declarator
 	}
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
-	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')' {
-		$$ = new DirectDeclarator($1, $3);
-	}
-	| direct_declarator '(' identifier_list ')'
+	| direct_declarator '[' ']' // array declarations?
+	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
+	| direct_declarator '(' identifier_list ')' // i take it back, no idea what this is for ngl
 	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);
+		$$ = new DirectDeclarator($1);  // what if it thinks this is a function call tho
 	}
 	;
 
 pointer
-	: '*'
-	| '*' pointer
+	: '*'  {$$ = new NodeList(new Pointer("*"));}
+	| '*' pointer {$2->PushBack(new Pointer("*")); $$ = $2;}
 	;
 
 parameter_list
-	: parameter_declaration { $$ = new NodeList($1); }
-	| parameter_list ',' parameter_declaration { $1->PushBack($3); $$ = $1; }
+	: parameter_declaration {$$ = new NodeList($1);}
+	| parameter_list ',' parameter_declaration { $1->PushBack($3); $$=$1; }
 	;
 
 parameter_declaration
 	: declaration_specifiers declarator { $$ = new Parameter($1, $2); }
-	| declaration_specifiers abstract_declarator
-	| declaration_specifiers
+	| declaration_specifiers abstract_declarator // what is this
+	| declaration_specifiers // why would you do this
 	;
 
 identifier_list
@@ -384,7 +391,7 @@ initializer_list
 
 statement
 	: labeled_statement
-	| compound_statement
+	| compound_statement { $$ = new NestStatement($1); }
 	| expression_statement
 	| selection_statement
 	| iteration_statement
@@ -400,24 +407,22 @@ labeled_statement
 compound_statement
 	: '{' '}' {
 		// TODO: correct this
-		$$ = nullptr;
+		$$ = new CompStatement(nullptr);
 	}
 	| '{' statement_list '}' {
-		$$ = $2;
+		$$ = new CompStatement($2);
 	}
 	| '{' declaration_list '}' {
-		// TODO: correct this
-		$$ = nullptr;
+		$$ = new CompStatement($2);
 	}
 	| '{' declaration_list statement_list '}'  {
-		// TODO: correct this
-		$$ = nullptr;
+		$$ = new CompStatement(new Multiline($2, $3));
 	}
 	;
 
 declaration_list
-	: declaration
-	| declaration_list declaration
+	: declaration { $$ = new NodeList($1); }
+	| declaration_list declaration { $1->PushBack($2); $$=$1; }
 	;
 
 statement_list
@@ -431,16 +436,16 @@ expression_statement
 	;
 
 selection_statement
-	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
+	: IF '(' expression ')' statement {$$ = new IfStatement($3, $5, nullptr);}
+	| IF '(' expression ')' statement ELSE statement {$$ = new IfStatement($3, $5, $7);}
 	| SWITCH '(' expression ')' statement
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement
-	| DO statement WHILE '(' expression ')' ';'
-	| FOR '(' expression_statement expression_statement ')' statement
-	| FOR '(' expression_statement expression_statement expression ')' statement
+	: WHILE '(' expression ')' statement {$$ = new WhileLoop($3, $5, false);}
+	| DO statement WHILE '(' expression ')' ';' {$$ = new WhileLoop($5, $2, true);}
+	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForLoop($3, $4, nullptr, $6); }
+	| FOR '(' expression_statement expression_statement expression ')' statement { $$ = new ForLoop($3, $4, $5, $7); }
 	;
 
 jump_statement

@@ -15,8 +15,9 @@ public:
         delete expression_;
     };
 
-    void EmitRISC(std::ostream &stream, Context &context) const override;
+    void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
     void Print(std::ostream &stream) const override;
+    void isFunction(Context &context) const override;
 };
 
 #endif
