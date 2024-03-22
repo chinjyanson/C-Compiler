@@ -1,7 +1,7 @@
 int g()
 {
-    int x;
+    int x = 15;
     int *y=&x;
-    *y=15;
-    return x;
+    y=&x;
+    return *y;
 }
