@@ -7,16 +7,16 @@
 
 class UnarySign : public Node
 {
-private:
-    std::string u_op_;
+    private:
+        std::string u_op_;
 
-public:
-    UnarySign(std::string u_op) : u_op_(u_op){}
-    virtual ~UnarySign() {}
-    virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
-    virtual void Print(std::ostream &stream) const override;
-    std::string ReturnID() const override;
-    bool isPointing() const override;
+    public:
+        UnarySign(std::string u_op) : u_op_(u_op){}
+        virtual ~UnarySign() {}
+        virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
+        virtual void Print(std::ostream &stream) const override;
+        std::string ReturnID() const override;
+        bool isPointing() const override;
 };
 
 #endif

@@ -8,16 +8,16 @@
 
 class PostOp : public Node
 {
-private:
-    VariableCall *expr_;
-    std::string op_;
+    private:
+        VariableCall *expr_;
+        std::string op_;
 
-public:
-    PostOp(Node *expr, std::string op) : op_(op), expr_(dynamic_cast<VariableCall*>(expr)) {}
-    virtual ~PostOp() {}
-    virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
-    virtual void Print(std::ostream &stream) const override;
-    void isFunction(Context &context) const override;
+    public:
+        PostOp(Node *expr, std::string op) : op_(op), expr_(dynamic_cast<VariableCall*>(expr)) {}
+        virtual ~PostOp() {}
+        virtual void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
+        virtual void Print(std::ostream &stream) const override;
+        void isFunction(Context &context) const override;
 };
 
 #endif

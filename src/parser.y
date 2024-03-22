@@ -78,7 +78,7 @@ primary_expression
 	}
     | FLOAT_CONSTANT
 	| STRING_LITERAL // {$$ = new StringConstant($1);}
-	| '(' expression ')' {$$ = $2;} // need to do this
+	| '(' expression ')' {$$ = $2;}
 	;
 
 postfix_expression
@@ -86,21 +86,21 @@ postfix_expression
 	| postfix_expression '[' expression ']' {$$ = new Array($1, $3);}
 	| postfix_expression '(' ')' {$$ = new FunctionCall($1, nullptr);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
-	| postfix_expression '.' IDENTIFIER // struct properties/variables whatever you call them
+	| postfix_expression '.' IDENTIFIER 
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP {$$ = new PostOp($1, "++");}
 	| postfix_expression DEC_OP {$$ = new PostOp($1, "--");}
 	;
 
 argument_expression_list
-	: assignment_expression  {$$ = new NodeList(new Argument($1));}
-	| argument_expression_list ',' assignment_expression  {$1->PushBack(new Argument($3)); $$ = $1;}
+	: assignment_expression {$$ = new NodeList(new Argument($1));}
+	| argument_expression_list ',' assignment_expression {$1->PushBack(new Argument($3)); $$ = $1;}
 	;
 
 unary_expression
 	: postfix_expression { $$ = $1; }
-	| INC_OP unary_expression // PRE-increment, ngl no idea how this will change in risc
-	| DEC_OP unary_expression // i know what it does in loops but uugh long to implement ngl
+	| INC_OP unary_expression 
+	| DEC_OP unary_expression 
 	| unary_operator cast_expression {$$ = new UnaryOp($1, $2);}
 	| SIZEOF unary_expression {$$ = new SizeOf($2);}
 	| SIZEOF '(' type_name ')' {$$ = new SizeOf($3);}
@@ -185,7 +185,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	// | unary_expression assignment_operator assignment_expression { $$ = new AssignOp($1, $3); } //this also originally had 3 args
+	| unary_expression assignment_operator assignment_expression { $$ = new AssignOp($1, $3); }
     | unary_expression '=' assignment_expression { $$ = new AssignOp($1, $3); }
 	| unary_expression MUL_ASSIGN assignment_expression { $$ = new AssignOp($1, new MultiplyOp($1, $3)); }
 	| unary_expression DIV_ASSIGN assignment_expression { $$ = new AssignOp($1, new DivideOp($1, $3)); }
@@ -200,8 +200,8 @@ assignment_expression
 	;
 
 assignment_operator
-	: '=' // i was originally doing it here, but it complained at me saying it wanted to be a string pointer
-	| MUL_ASSIGN  // so i just decided to circumvent it entirely.
+	: '='
+	| MUL_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
 	| ADD_ASSIGN
@@ -219,11 +219,11 @@ expression
 	;
 
 constant_expression
-	: conditional_expression
+	: conditional_expression {$$ = $1;}
 	;
 
 declaration
-	: declaration_specifiers ';'
+	: declaration_specifiers ';' { $$ = new Declarations($1, nullptr); }
 	| declaration_specifiers init_declarator_list ';' { $$ = new Declarations($1, $2); }
 	;
 
@@ -262,8 +262,8 @@ type_specifier
 	| DOUBLE { $$ = new TypeSpecifier("double");}
 	| SIGNED { $$ = new TypeSpecifier("signed");}
 	| UNSIGNED { $$ = new TypeSpecifier("unsigned");}
-    | struct_specifier // i really wanna do structs
-	| enum_specifier   // or enums, that'd go hard
+    | struct_specifier 
+	| enum_specifier 
 	| TYPE_NAME
 	;
 
@@ -326,12 +326,10 @@ direct_declarator
 	}
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']' {$$ = new Array($1, $3);}
-	| direct_declarator '[' ']' // array declarations?
+	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'  { $$ = new DeclaratorWithParameters($1, $3); }
-	| direct_declarator '(' identifier_list ')' // i take it back, no idea what this is for ngl
-	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);  // what if it thinks this is a function call tho
-	}
+	| direct_declarator '(' identifier_list ')'
+	| direct_declarator '(' ')' {$$ = new DirectDeclarator($1);}
 	;
 
 pointer
@@ -346,8 +344,8 @@ parameter_list
 
 parameter_declaration
 	: declaration_specifiers declarator { $$ = new Parameter($1, $2); }
-	| declaration_specifiers abstract_declarator // what is this
-	| declaration_specifiers // why would you do this
+	| declaration_specifiers abstract_declarator
+	| declaration_specifiers
 	;
 
 identifier_list
@@ -390,7 +388,7 @@ initializer_list
 	;
 
 statement
-	: labeled_statement
+	: labeled_statement 
 	| compound_statement { $$ = new NestStatement($1); }
 	| expression_statement
 	| selection_statement
@@ -451,16 +449,9 @@ jump_statement
 	: GOTO IDENTIFIER ';'
 	| CONTINUE ';'
 	| BREAK ';'
-	| RETURN ';' {
-		$$ = new ReturnStatement(nullptr);
-	}
-	| RETURN expression ';' {
-		$$ = new ReturnStatement($2);
-	}
+	| RETURN ';' {$$ = new ReturnStatement(nullptr);}
+	| RETURN expression ';' {$$ = new ReturnStatement($2);}
 	;
-
-
-
 %%
 
 Node *g_root;

@@ -5,16 +5,16 @@
 
 class IntConstant : public Node
 {
-private:
-    int value_;
+    private:
+        int value_;
 
-public:
-    IntConstant(int value) : value_(value) {}
+    public:
+        IntConstant(int value) : value_(value) {}
 
-    void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
-    void Print(std::ostream &stream) const override;
-    int getSize(Context &context) const override;
-    int getValue() const override;
+        void EmitRISC(std::ostream &stream, Context &context, int destReg) const override;
+        void Print(std::ostream &stream) const override;
+        int getSize(Context &context) const override;
+        int getValue() const override;
 };
 
 
